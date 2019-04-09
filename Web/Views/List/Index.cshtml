@@ -1,0 +1,40 @@
+﻿@model List<DAL.Domain.Movie>
+
+@{
+    ViewBag.Title = "Movie List";
+}
+
+<div class="row">
+
+    @foreach (var item in Model) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card mb-3">
+                <a href="@Html.DisplayFor(modelItem => item.Url)" target="_blank">
+                    <img alt="..." src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top"/>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </h5>
+                    <p class="card-text">
+                        @foreach (var tag in item.Tags) {
+                            <span class="badge badge-secondary">@Html.DisplayFor(modelTag => tag.Content)</span>
+                        }
+                    </p>
+                    <hr/>
+                    <p class="card-text">
+                        <small class="text-muted">Added by @Html.DisplayFor(modelItem => item.User.UserName)</small>
+                    </p>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col">
+                        <a href="#" class="btn btn-block btn-light rounded-0">Upvote <span class="badge badge-secondary">3</span></a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="btn btn-block btn-light rounded-0">Downvote <span class="badge badge-secondary">5</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

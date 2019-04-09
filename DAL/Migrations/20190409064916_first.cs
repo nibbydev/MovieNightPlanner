@@ -29,18 +29,18 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    AddedById = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     Time = table.Column<DateTime>(nullable: false),
                     Title = table.Column<string>(maxLength: 64, nullable: false),
-                    Description = table.Column<string>(maxLength: 256, nullable: true),
-                    Image = table.Column<string>(maxLength: 256, nullable: true)
+                    Image = table.Column<string>(maxLength: 256, nullable: true),
+                    Url = table.Column<string>(maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Movies_Users_AddedById",
-                        column: x => x.AddedById,
+                        name: "FK_Movies_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -68,35 +68,76 @@ namespace DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Url",
+                name: "Tags",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Link = table.Column<string>(maxLength: 256, nullable: false),
-                    Title = table.Column<string>(maxLength: 64, nullable: true),
-                    Description = table.Column<string>(maxLength: 256, nullable: true),
-                    MovieId = table.Column<int>(nullable: true)
+                    Content = table.Column<string>(maxLength: 64, nullable: false),
+                    MovieId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Url", x => x.Id);
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Url_Movies_MovieId",
+                        name: "FK_Tags_Movies_MovieId",
                         column: x => x.MovieId,
                         principalTable: "Movies",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Joined", "LastActive", "Pin", "UserName" },
+                values: new object[] { 1, new DateTime(2019, 4, 9, 9, 49, 16, 72, DateTimeKind.Local).AddTicks(7806), new DateTime(2019, 4, 9, 9, 49, 16, 74, DateTimeKind.Local).AddTicks(1616), "0000", "catnib" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Joined", "LastActive", "Pin", "UserName" },
+                values: new object[] { 2, new DateTime(2019, 4, 9, 9, 49, 16, 74, DateTimeKind.Local).AddTicks(1885), new DateTime(2019, 4, 9, 9, 49, 16, 74, DateTimeKind.Local).AddTicks(1893), "1234", "siegrest" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Joined", "LastActive", "Pin", "UserName" },
+                values: new object[] { 3, new DateTime(2019, 4, 9, 9, 49, 16, 74, DateTimeKind.Local).AddTicks(1898), new DateTime(2019, 4, 9, 9, 49, 16, 74, DateTimeKind.Local).AddTicks(1900), "4568", "rinnex" });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Image", "Time", "Title", "Url", "UserId" },
+                values: new object[] { 1, "https://cdn.myanimelist.net/images/anime/12/76049.jpg", new DateTime(2019, 4, 9, 9, 49, 16, 75, DateTimeKind.Local).AddTicks(2032), "One Punch Man", "https://myanimelist.net/anime/30276/One_Punch_Man", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Image", "Time", "Title", "Url", "UserId" },
+                values: new object[] { 2, "https://cdn.myanimelist.net/images/anime/3/77176.jpg", new DateTime(2019, 4, 9, 9, 49, 16, 75, DateTimeKind.Local).AddTicks(2743), "Mobile Suit Gundam Thunderbolt", "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt", 1 });
+
+            migrationBuilder.InsertData(
+                table: "Movies",
+                columns: new[] { "Id", "Image", "Time", "Title", "Url", "UserId" },
+                values: new object[] { 3, "https://cdn.myanimelist.net/images/anime/1562/100460.jpg", new DateTime(2019, 4, 9, 9, 49, 16, 75, DateTimeKind.Local).AddTicks(2759), "Fairy Gone", "https://myanimelist.net/anime/39063/Fairy_Gone", 2 });
+
+            migrationBuilder.InsertData(
+                table: "Tags",
+                columns: new[] { "Id", "Content", "MovieId" },
+                values: new object[,]
+                {
+                    { 1, "action", 1 },
+                    { 2, "really cool", 1 },
+                    { 3, "military", 2 },
+                    { 4, "michael bay", 2 },
+                    { 5, "average at best", 2 },
+                    { 6, "eh", 3 }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Movies_AddedById",
+                name: "IX_Movies_UserId",
                 table: "Movies",
-                column: "AddedById");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Url_MovieId",
-                table: "Url",
+                name: "IX_Tags_MovieId",
+                table: "Tags",
                 column: "MovieId");
 
             migrationBuilder.CreateIndex(
@@ -108,7 +149,7 @@ namespace DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Url");
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Votes");
