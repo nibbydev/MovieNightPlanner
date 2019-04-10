@@ -3,26 +3,27 @@
 @{
     ViewBag.Title = "Movie List";
 }
-
 <div class="row">
-    @foreach (var item in Model.Movies) {
+    <div class="col">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add">Add new</button>
+    </div>
+</div>
+<div class="row">
+    @foreach (var item in Model.Submissions) {
         <div class="col-lg-4 col-md-6 col-12">
             <div class="card mb-3">
                 <a href="@Html.DisplayFor(modelItem => item.Url)" target="_blank">
-                    <img alt="..." src="@Html.DisplayFor(modelItem => item.Image)" class="card-img-top"/>
+                    <img alt="..." src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top"/>
                 </a>
                 <div class="card-body">
                     <h5 class="card-title">
-                        @Html.DisplayFor(modelItem => item.Title)
+                        @item.Title
                     </h5>
                     <p class="card-text">
-                        @foreach (var tag in item.Tags) {
-                            <span class="badge badge-secondary">@Html.DisplayFor(modelTag => tag.Content)</span>
-                        }
                     </p>
                     <hr/>
                     <p class="card-text">
-                        <small class="text-muted">Added by @Html.DisplayFor(modelItem => item.UserName)</small>
+                        <small class="text-muted">Added by @item.AddedBy</small>
                     </p>
                 </div>
                 <div class="row no-gutters">
@@ -36,46 +37,44 @@
             </div>
         </div>
     }
-    
-    <div class="col-lg-4 col-md-6 col-12 pb-3">
-        <div class="card h-100">
-            <form asp-controller="List" asp-action="Add">
-                <div class="card-body">
-                    <p class="text-success text-center">Add new</p>
-                    <hr/>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-link"></i>
-                                </span>
-                            </div>
-                            <input asp-for="SourceUrl" class="form-control" placeholder="MAL link">
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new entry</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-link"></i>
+                            </span>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-tag"></i>
-                                </span>
-                            </div>
-                            <input asp-for="TagString" class="form-control" placeholder="Comma separated tags">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </div>
-                            <input asp-for="UserName" class="form-control" placeholder="Your name">
-                        </div>
+                        <input asp-for="PostUrl" id="modal-url" class="form-control" placeholder="MAL link">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-block btn-light rounded">Add</button>
-            </form>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user"></i>
+                            </span>
+                        </div>
+                        <input asp-for="PostName" id="modal-username" class="form-control" placeholder="Your name">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-0">
+                <button id="modal-submit" type="button" class="btn btn-block btn-light"><span>Add</span></button>
+            </div>
         </div>
     </div>
 </div>

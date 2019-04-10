@@ -10,17 +10,13 @@ namespace DAL.Domain {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
-        public Movie Movie { get; set; }
-        public int MovieId { get; set; }
-        
-        [Required]
-        public short Value { get; set; }
-        
-        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Time { get; set; }
         
-        [Required]
+        public Submission Submission { get; set; }
+        public int SubmissionId { get; set; }
+        
+        public bool Value { get; set; }
         public long Ip { get; set; }
     }
 }
