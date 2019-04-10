@@ -65,3 +65,8 @@ body {
   color: #fff;
   background-color: #A9B2BA;
 }
+
+.border-secondary {
+  border: 1px solid rgba(0, 0, 0, 0.125)!important;
+  border-radius: 0.25rem;
+}

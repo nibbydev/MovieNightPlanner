@@ -10,8 +10,8 @@ namespace DAL.Domain {
         public int Id { get; set; }
         
         [Required]
-        public User User { get; set; }
-        public int UserId { get; set; }
+        [MinLength(4),MaxLength(64)]
+        public string UserName { get; set; }
         
         [Required]
         public DateTime Time { get; set; }

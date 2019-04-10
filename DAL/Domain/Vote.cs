@@ -9,6 +9,9 @@ namespace DAL.Domain {
         [Column(Order=1)]
         public int Id { get; set; }
         
+        public Movie Movie { get; set; }
+        public int MovieId { get; set; }
+        
         [Required]
         public short Value { get; set; }
         
@@ -16,6 +19,6 @@ namespace DAL.Domain {
         public DateTime Time { get; set; }
         
         [Required]
-        public User User { get; set; }
+        public long Ip { get; set; }
     }
 }

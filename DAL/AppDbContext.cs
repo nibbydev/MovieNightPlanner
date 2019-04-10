@@ -19,46 +19,25 @@ namespace DAL {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
-
-            modelBuilder.Entity<User>().HasData(
-                new User {
-                    Id = 1,
-                    UserName = "catnib",
-                    Pin = "0000",
-                    Joined = DateTime.Now,
-                    LastActive = DateTime.Now
-                }, new User {
-                    Id = 2,
-                    UserName = "siegrest",
-                    Pin = "1234",
-                    Joined = DateTime.Now,
-                    LastActive = DateTime.Now
-                }, new User {
-                    Id = 3,
-                    UserName = "rinnex",
-                    Pin = "4568",
-                    Joined = DateTime.Now,
-                    LastActive = DateTime.Now
-                });
             
             modelBuilder.Entity<Movie>().HasData(
                 new Movie {
                     Id = 1,
-                    UserId = 1,
+                    UserName = "catnib",
                     Time = DateTime.Now,
                     Title = "One Punch Man",
                     Url = "https://myanimelist.net/anime/30276/One_Punch_Man",
                     Image = "https://cdn.myanimelist.net/images/anime/12/76049.jpg"
                 }, new Movie {
                     Id = 2,
-                    UserId = 1,
+                    UserName = "siegrest",
                     Time = DateTime.Now,
                     Title = "Mobile Suit Gundam Thunderbolt",
                     Url = "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt",
                     Image = "https://cdn.myanimelist.net/images/anime/3/77176.jpg"
                 }, new Movie {
                     Id = 3,
-                    UserId = 2,
+                    UserName = "rinnex",
                     Time = DateTime.Now,
                     Title = "Fairy Gone",
                     Url = "https://myanimelist.net/anime/39063/Fairy_Gone",

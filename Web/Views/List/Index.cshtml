@@ -1,12 +1,11 @@
-﻿@model List<DAL.Domain.Movie>
+﻿@model ListViewModel
 
 @{
     ViewBag.Title = "Movie List";
 }
 
 <div class="row">
-
-    @foreach (var item in Model) {
+    @foreach (var item in Model.Movies) {
         <div class="col-lg-4 col-md-6 col-12">
             <div class="card mb-3">
                 <a href="@Html.DisplayFor(modelItem => item.Url)" target="_blank">
@@ -23,7 +22,7 @@
                     </p>
                     <hr/>
                     <p class="card-text">
-                        <small class="text-muted">Added by @Html.DisplayFor(modelItem => item.User.UserName)</small>
+                        <small class="text-muted">Added by @Html.DisplayFor(modelItem => item.UserName)</small>
                     </p>
                 </div>
                 <div class="row no-gutters">
@@ -37,4 +36,46 @@
             </div>
         </div>
     }
+    
+    <div class="col-lg-4 col-md-6 col-12 pb-3">
+        <div class="card h-100">
+            <form asp-controller="List" asp-action="Add">
+                <div class="card-body">
+                    <p class="text-success text-center">Add new</p>
+                    <hr/>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-link"></i>
+                                </span>
+                            </div>
+                            <input asp-for="SourceUrl" class="form-control" placeholder="MAL link">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-tag"></i>
+                                </span>
+                            </div>
+                            <input asp-for="TagString" class="form-control" placeholder="Comma separated tags">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <input asp-for="UserName" class="form-control" placeholder="Your name">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-light rounded">Add</button>
+            </form>
+        </div>
+    </div>
 </div>
