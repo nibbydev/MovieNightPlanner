@@ -7,6 +7,7 @@ namespace DAL.Domain {
     public class Movie {
         [Key]
         [Column(Order=1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
         [Required]
@@ -14,6 +15,7 @@ namespace DAL.Domain {
         public string UserName { get; set; }
         
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Time { get; set; }
         
         [Required]

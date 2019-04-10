@@ -7,6 +7,7 @@ namespace DAL.Domain {
     public class Vote {
         [Key]
         [Column(Order=1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         
         public Movie Movie { get; set; }
@@ -16,6 +17,7 @@ namespace DAL.Domain {
         public short Value { get; set; }
         
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Time { get; set; }
         
         [Required]
