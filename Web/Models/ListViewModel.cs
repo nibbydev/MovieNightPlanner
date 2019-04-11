@@ -14,9 +14,7 @@ namespace NetGroupCV.Models {
         }
 
         public void GetSubmissions(DbContext ctx) {
-            Submissions = ctx.Submissions
-                .Where(t => t.ImageUrl != null)
-                .ToList();
+            Submissions = ctx.Submissions.ToList();
 
             // Grab vote count for each submission
             foreach (var submission in Submissions) {

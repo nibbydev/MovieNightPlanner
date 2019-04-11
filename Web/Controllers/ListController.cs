@@ -31,8 +31,8 @@ namespace NetGroupCV.Controllers {
             }
             
             // Add to database
-            if (!model.AddToDb(_ctx)) {
-                return BadRequest("Could not add to database");
+            if (!model.AddToDb(_ctx, out msg)) {
+                return BadRequest(msg);
             }
 
             return Ok(msg);

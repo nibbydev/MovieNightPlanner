@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DAL.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL {
     public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext {
@@ -23,35 +24,12 @@ namespace DAL {
             modelBuilder.Entity<Submission>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<Vote>().Property(e => e.Time).HasDefaultValueSql("now()");
             
-            modelBuilder.Entity<Submission>().HasIndex(e=>e.MalId).IsUnique();
 
             // https://github.com/aspnet/EntityFrameworkCore/issues/12278
-            modelBuilder.Entity<Vote>().Property(e => e.Value).HasColumnType("BIT(1)").HasConversion<int>();
-
+            //modelBuilder.Entity<Vote>().Property(e => e.Value).HasColumnType("BIT(1)").HasConversion<int>();
             
-            modelBuilder.Entity<Submission>().HasData(
-                new Submission {
-                    Id = 1,
-                    AddedBy = "catnib",
-                    Time = DateTime.Now,
-                    Title = "One Punch Man",
-                    Url = "https://myanimelist.net/anime/30276/One_Punch_Man",
-                    ImageUrl = "https://cdn.myanimelist.net/images/anime/12/76049.jpg"
-                }, new Submission {
-                    Id = 2,
-                    AddedBy = "siegrest",
-                    Time = DateTime.Now,
-                    Title = "Mobile Suit Gundam Thunderbolt",
-                    Url = "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt",
-                    ImageUrl = "https://cdn.myanimelist.net/images/anime/3/77176.jpg"
-                }, new Submission {
-                    Id = 3,
-                    AddedBy = "rinnex",
-                    Time = DateTime.Now,
-                    Title = "Fairy Gone",
-                    Url = "https://myanimelist.net/anime/39063/Fairy_Gone",
-                    ImageUrl = "https://cdn.myanimelist.net/images/anime/1562/100460.jpg"
-                });
+            // https://github.com/aspnet/EntityFrameworkCore/issues/14051
+            modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int16>());
         }
     }
 }

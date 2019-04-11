@@ -12,20 +12,39 @@
                     <img alt="..." src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top"/>
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title">
-                        @item.Title
-                    </h5>
-                    <p class="card-text">
-                        <small class="text-muted">Added by @item.AddedBy</small>
-                    </p>
+                    <h5 class="card-title">@Html.DisplayFor(t => item.Title)</h5>
+                    <hr/>
+
+                    <table class="table table-borderless table-sm mb-0">
+                        <tbody>
+                        <tr>
+                            <td>Score</td>
+                            <td><small>@Html.DisplayFor(t => item.Score)</small></td>
+                        </tr>
+                        <tr>
+                            <td>Duration</td>
+                            <td><small>@Html.DisplayFor(t => item.Duration)</small></td>
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            <td><small>@Html.DisplayFor(t => item.Rating)</small></td>
+                        </tr>
+                        <tr>
+                            <td>Genres</td>
+                            <td><small>@Html.DisplayFor(t => item.Genres)</small></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
                 </div>
                 <div class="row no-gutters">
                     <div class="col">
                         <form asp-controller="List" asp-action="Vote">
                             <input asp-for="Id" type="hidden" value="@item.Id"/>
                             <input asp-for="Vote" type="hidden" value="@true"/>
-                            
-                            <button type="submit" class="btn btn-block btn-light rounded-0">
+
+                            <button type="submit" class="btn btn-block btn-light">
                                 <i class="fa fa-thumbs-up mr-2"></i>
                                 @if (item.UpVotes > 0) {
                                     <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
@@ -37,8 +56,8 @@
                         <form asp-controller="List" asp-action="Vote">
                             <input asp-for="Id" type="hidden" value="@item.Id"/>
                             <input asp-for="Vote" type="hidden" value="@false"/>
-                            
-                            <button type="submit" class="btn btn-block btn-light rounded-0">
+
+                            <button type="submit" class="btn btn-block btn-light border-right">
                                 <i class="fa fa-thumbs-down mr-2"></i>
                                 @if (item.DownVotes > 0) {
                                     <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
