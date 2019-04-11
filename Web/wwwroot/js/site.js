@@ -38,6 +38,7 @@ function submit() {
         span.removeClass();
         span.addClass("text-danger");
         span.html("Error: " + response.responseText);
+        btn.prop("disabled", false);
     });
 }
 

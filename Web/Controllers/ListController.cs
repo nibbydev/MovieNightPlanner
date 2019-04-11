@@ -12,7 +12,7 @@ namespace NetGroupCV.Controllers {
         }
         
         [HttpPost]
-        public IActionResult Add(ListViewModel model) {
+        public IActionResult Add(ListNewViewModel model) {
             // Check if input is ok
             if (!model.Verify(out var msg)) {
                 return BadRequest(msg);
@@ -24,6 +24,11 @@ namespace NetGroupCV.Controllers {
             }
 
             return Ok(msg);
+        }
+        
+        [HttpGet]
+        public IActionResult New() {
+            return View();
         }
     }
 }
