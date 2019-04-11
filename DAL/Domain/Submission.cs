@@ -6,8 +6,7 @@ namespace DAL.Domain {
     public class Submission {
         [Key] [Column(Order = 1)] public int Id { get; set; }
 
-        [Column(Order = 2)]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column(Order = 2), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Time { get; set; }
 
         [MinLength(3), MaxLength(32)] public string AddedBy { get; set; }

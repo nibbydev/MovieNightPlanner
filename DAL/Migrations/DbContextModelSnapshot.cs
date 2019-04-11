@@ -55,6 +55,30 @@ namespace DAL.Migrations
                     b.ToTable("Submissions");
                 });
 
+            modelBuilder.Entity("DAL.Domain.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Joined")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("now()");
+
+                    b.Property<string>("Salt")
+                        .IsRequired();
+
+                    b.Property<string>("Secret")
+                        .IsRequired();
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(32);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("DAL.Domain.Vote", b =>
                 {
                     b.Property<int>("Id")

@@ -23,6 +23,7 @@ namespace DAL {
             
             modelBuilder.Entity<Submission>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<Vote>().Property(e => e.Time).HasDefaultValueSql("now()");
+            modelBuilder.Entity<User>().Property(e => e.Joined).HasDefaultValueSql("now()");
             
 
             // https://github.com/aspnet/EntityFrameworkCore/issues/12278

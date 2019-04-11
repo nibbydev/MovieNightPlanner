@@ -21,6 +21,7 @@ function submit() {
     btn.prop("disabled", true);
     
     const request = $.ajax({
+        // should be replaced with a bit more dynamic solution
         url: "https://localhost:5001/List/Add",
         data: data,
         type: "POST",
