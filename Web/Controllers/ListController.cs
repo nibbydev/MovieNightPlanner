@@ -14,14 +14,16 @@ namespace NetGroupCV.Controllers {
         [HttpPost]
         public IActionResult Add(ListViewModel model) {
             // Check if input is ok
-            if (model.VerifySubmission(out var msg)) {
-                // Add to database
-                model.AddSubmission(_ctx);
-                
-                return Ok(msg);
+            if (!model.Verify(out var msg)) {
+                return BadRequest(msg);
+            }
+            
+            // Add to database
+            if (!model.AddToDb(_ctx)) {
+                return BadRequest("Could not add to database");
             }
 
-            return BadRequest(msg);
+            return Ok(msg);
         }
     }
 }

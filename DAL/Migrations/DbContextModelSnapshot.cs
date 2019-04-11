@@ -56,6 +56,9 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MalId")
+                        .IsUnique();
+
                     b.ToTable("Submissions");
 
                     b.HasData(
@@ -64,7 +67,7 @@ namespace DAL.Migrations
                             Id = 1,
                             AddedBy = "catnib",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/12/76049.jpg",
-                            Time = new DateTime(2019, 4, 10, 21, 15, 36, 888, DateTimeKind.Local).AddTicks(4595),
+                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 616, DateTimeKind.Local).AddTicks(7186),
                             Title = "One Punch Man",
                             Url = "https://myanimelist.net/anime/30276/One_Punch_Man"
                         },
@@ -73,7 +76,7 @@ namespace DAL.Migrations
                             Id = 2,
                             AddedBy = "siegrest",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/3/77176.jpg",
-                            Time = new DateTime(2019, 4, 10, 21, 15, 36, 889, DateTimeKind.Local).AddTicks(9398),
+                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1672),
                             Title = "Mobile Suit Gundam Thunderbolt",
                             Url = "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt"
                         },
@@ -82,7 +85,7 @@ namespace DAL.Migrations
                             Id = 3,
                             AddedBy = "rinnex",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/1562/100460.jpg",
-                            Time = new DateTime(2019, 4, 10, 21, 15, 36, 889, DateTimeKind.Local).AddTicks(9417),
+                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1690),
                             Title = "Fairy Gone",
                             Url = "https://myanimelist.net/anime/39063/Fairy_Gone"
                         });

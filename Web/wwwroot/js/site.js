@@ -9,7 +9,7 @@ $("#modal-submit").click(submit);
 
 function submit() {
     const data = getAndVerifyInputs();
-    if (!data.PostUrl || !data.PostName) {
+    if (!data.Url || !data.Name) {
         return;
     }
 
@@ -46,8 +46,8 @@ function getAndVerifyInputs() {
     const namePattern = /^[a-zA-Z_]{3,32}$/;
     
     return {
-        PostUrl: getAndVerify("#modal-url", urlPattern),
-        PostName: getAndVerify("#modal-username", namePattern)
+        Url: getAndVerify("#modal-url", urlPattern),
+        Name: getAndVerify("#modal-username", namePattern)
     };
 }
 
