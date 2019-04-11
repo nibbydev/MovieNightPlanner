@@ -21,16 +21,30 @@
                 </div>
                 <div class="row no-gutters">
                     <div class="col">
-                        <a href="#" class="btn btn-block btn-light rounded-0">
-                            <i class="fa fa-thumbs-up mr-2"></i>
-                            <span class="badge badge-success">3</span>
-                        </a>
+                        <form asp-controller="List" asp-action="Vote">
+                            <input asp-for="Id" type="hidden" value="@item.Id"/>
+                            <input asp-for="Vote" type="hidden" value="@true"/>
+                            
+                            <button type="submit" class="btn btn-block btn-light rounded-0">
+                                <i class="fa fa-thumbs-up mr-2"></i>
+                                @if (item.UpVotes > 0) {
+                                    <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                }
+                            </button>
+                        </form>
                     </div>
                     <div class="col">
-                        <a href="#" class="btn btn-block btn-light rounded-0">
-                            <i class="fa fa-thumbs-down mr-2"></i>
-                            <span class="badge badge-danger">1</span>
-                        </a>
+                        <form asp-controller="List" asp-action="Vote">
+                            <input asp-for="Id" type="hidden" value="@item.Id"/>
+                            <input asp-for="Vote" type="hidden" value="@false"/>
+                            
+                            <button type="submit" class="btn btn-block btn-light rounded-0">
+                                <i class="fa fa-thumbs-down mr-2"></i>
+                                @if (item.DownVotes > 0) {
+                                    <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                }
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -28,5 +28,10 @@ namespace DAL.Domain {
         public string Rating { get; set; }
         public string Synopsis { get; set; }
         public string Genres { get; set; }
+
+        [NotMapped] 
+        public int UpVotes { get; set; }
+        [NotMapped] 
+        public int DownVotes { get; set; }
     }
 }

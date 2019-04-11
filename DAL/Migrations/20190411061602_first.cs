@@ -15,11 +15,11 @@ namespace DAL.Migrations
                         .Annotation("MySQL:AutoIncrement", true),
                     Time = table.Column<DateTime>(nullable: false, defaultValueSql: "now()"),
                     AddedBy = table.Column<string>(maxLength: 32, nullable: true),
-                    Url = table.Column<string>(maxLength: 256, nullable: false),
                     MalId = table.Column<int>(nullable: true),
                     Score = table.Column<double>(nullable: true),
                     Title = table.Column<string>(nullable: true),
                     Type = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true),
                     ImageUrl = table.Column<string>(nullable: true),
                     TrailerUrl = table.Column<string>(nullable: true),
                     Episodes = table.Column<int>(nullable: true),
@@ -41,7 +41,7 @@ namespace DAL.Migrations
                         .Annotation("MySQL:AutoIncrement", true),
                     Time = table.Column<DateTime>(nullable: false, defaultValueSql: "now()"),
                     SubmissionId = table.Column<int>(nullable: false),
-                    Value = table.Column<short>(nullable: false),
+                    Value = table.Column<short>(type: "BIT(1)", nullable: false),
                     Ip = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -58,17 +58,17 @@ namespace DAL.Migrations
             migrationBuilder.InsertData(
                 table: "Submissions",
                 columns: new[] { "Id", "AddedBy", "Duration", "Episodes", "Genres", "ImageUrl", "MalId", "Rating", "Score", "Synopsis", "Time", "Title", "TrailerUrl", "Type", "Url" },
-                values: new object[] { 1, "catnib", null, null, null, "https://cdn.myanimelist.net/images/anime/12/76049.jpg", null, null, null, null, new DateTime(2019, 4, 11, 7, 54, 6, 616, DateTimeKind.Local).AddTicks(7186), "One Punch Man", null, null, "https://myanimelist.net/anime/30276/One_Punch_Man" });
+                values: new object[] { 1, "catnib", null, null, null, "https://cdn.myanimelist.net/images/anime/12/76049.jpg", null, null, null, null, new DateTime(2019, 4, 11, 9, 16, 1, 741, DateTimeKind.Local).AddTicks(3632), "One Punch Man", null, null, "https://myanimelist.net/anime/30276/One_Punch_Man" });
 
             migrationBuilder.InsertData(
                 table: "Submissions",
                 columns: new[] { "Id", "AddedBy", "Duration", "Episodes", "Genres", "ImageUrl", "MalId", "Rating", "Score", "Synopsis", "Time", "Title", "TrailerUrl", "Type", "Url" },
-                values: new object[] { 2, "siegrest", null, null, null, "https://cdn.myanimelist.net/images/anime/3/77176.jpg", null, null, null, null, new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1672), "Mobile Suit Gundam Thunderbolt", null, null, "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt" });
+                values: new object[] { 2, "siegrest", null, null, null, "https://cdn.myanimelist.net/images/anime/3/77176.jpg", null, null, null, null, new DateTime(2019, 4, 11, 9, 16, 1, 742, DateTimeKind.Local).AddTicks(7496), "Mobile Suit Gundam Thunderbolt", null, null, "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt" });
 
             migrationBuilder.InsertData(
                 table: "Submissions",
                 columns: new[] { "Id", "AddedBy", "Duration", "Episodes", "Genres", "ImageUrl", "MalId", "Rating", "Score", "Synopsis", "Time", "Title", "TrailerUrl", "Type", "Url" },
-                values: new object[] { 3, "rinnex", null, null, null, "https://cdn.myanimelist.net/images/anime/1562/100460.jpg", null, null, null, null, new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1690), "Fairy Gone", null, null, "https://myanimelist.net/anime/39063/Fairy_Gone" });
+                values: new object[] { 3, "rinnex", null, null, null, "https://cdn.myanimelist.net/images/anime/1562/100460.jpg", null, null, null, null, new DateTime(2019, 4, 11, 9, 16, 1, 742, DateTimeKind.Local).AddTicks(7512), "Fairy Gone", null, null, "https://myanimelist.net/anime/39063/Fairy_Gone" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Submissions_MalId",

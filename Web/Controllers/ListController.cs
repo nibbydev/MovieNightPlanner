@@ -8,8 +8,20 @@ namespace NetGroupCV.Controllers {
         
         [HttpGet]
         public IActionResult Index() {
-            return View(new ListViewModel(_ctx));
+            var model = new ListViewModel();
+            model.GetSubmissions(_ctx);
+
+            return View(model);
         }
+        
+        
+        [HttpPost]
+        public IActionResult Vote(ListViewModel model) {
+            model.AddVoteToDb(_ctx);
+            return RedirectToAction("Index");
+        }
+
+        
         
         [HttpPost]
         public IActionResult Add(ListNewViewModel model) {

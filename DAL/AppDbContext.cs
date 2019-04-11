@@ -24,6 +24,10 @@ namespace DAL {
             modelBuilder.Entity<Vote>().Property(e => e.Time).HasDefaultValueSql("now()");
             
             modelBuilder.Entity<Submission>().HasIndex(e=>e.MalId).IsUnique();
+
+            // https://github.com/aspnet/EntityFrameworkCore/issues/12278
+            modelBuilder.Entity<Vote>().Property(e => e.Value).HasColumnType("BIT(1)").HasConversion<int>();
+
             
             modelBuilder.Entity<Submission>().HasData(
                 new Submission {

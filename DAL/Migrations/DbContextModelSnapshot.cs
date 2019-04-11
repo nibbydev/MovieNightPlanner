@@ -50,9 +50,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("Type");
 
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(256);
+                    b.Property<string>("Url");
 
                     b.HasKey("Id");
 
@@ -67,7 +65,7 @@ namespace DAL.Migrations
                             Id = 1,
                             AddedBy = "catnib",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/12/76049.jpg",
-                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 616, DateTimeKind.Local).AddTicks(7186),
+                            Time = new DateTime(2019, 4, 11, 9, 16, 1, 741, DateTimeKind.Local).AddTicks(3632),
                             Title = "One Punch Man",
                             Url = "https://myanimelist.net/anime/30276/One_Punch_Man"
                         },
@@ -76,7 +74,7 @@ namespace DAL.Migrations
                             Id = 2,
                             AddedBy = "siegrest",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/3/77176.jpg",
-                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1672),
+                            Time = new DateTime(2019, 4, 11, 9, 16, 1, 742, DateTimeKind.Local).AddTicks(7496),
                             Title = "Mobile Suit Gundam Thunderbolt",
                             Url = "https://myanimelist.net/anime/31973/Mobile_Suit_Gundam_Thunderbolt"
                         },
@@ -85,7 +83,7 @@ namespace DAL.Migrations
                             Id = 3,
                             AddedBy = "rinnex",
                             ImageUrl = "https://cdn.myanimelist.net/images/anime/1562/100460.jpg",
-                            Time = new DateTime(2019, 4, 11, 7, 54, 6, 618, DateTimeKind.Local).AddTicks(1690),
+                            Time = new DateTime(2019, 4, 11, 9, 16, 1, 742, DateTimeKind.Local).AddTicks(7512),
                             Title = "Fairy Gone",
                             Url = "https://myanimelist.net/anime/39063/Fairy_Gone"
                         });
@@ -104,7 +102,8 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("now()");
 
-                    b.Property<bool>("Value");
+                    b.Property<short>("Value")
+                        .HasColumnType("BIT(1)");
 
                     b.HasKey("Id");
 
