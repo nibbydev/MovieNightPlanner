@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using DAL;
 using DAL.Domain;
 
-namespace NetGroupCV.Models {
+namespace MovieNight.Models {
     public class LoginViewModel {
         private static readonly Regex UsernameNameRegex = new Regex(@"^[a-zA-Z_]+$");
         

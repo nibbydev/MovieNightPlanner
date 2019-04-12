@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using NetGroupCV.Models;
+using MovieNight.Models;
 
-namespace NetGroupCV.Controllers {
+namespace MovieNight.Controllers {
     public class HomeController : Controller {
         public IActionResult Index() {
             return View();

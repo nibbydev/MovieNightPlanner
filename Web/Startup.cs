@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace NetGroupCV {
+namespace MovieNight {
     public class Startup {
         public Startup(IConfiguration configuration) {
             Configuration = configuration;

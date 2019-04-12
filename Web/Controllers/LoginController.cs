@@ -1,9 +1,9 @@
 using DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NetGroupCV.Models;
+using MovieNight.Models;
 
-namespace NetGroupCV.Controllers {
+namespace MovieNight.Controllers {
     public class LoginController : Controller {
         private readonly MlContext _ctx = new MlContext();
         

@@ -1,6 +1,6 @@
 using System;
 
-namespace NetGroupCV.Models {
+namespace MovieNight.Models {
     public class ErrorViewModel {
         public string RequestId { get; set; }
         public string ErrorMessage { get; set; }

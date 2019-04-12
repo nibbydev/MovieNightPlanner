@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using DAL;
 using DAL.Domain;
 
-namespace NetGroupCV.Models {
+namespace MovieNight.Models {
     public class ListNewViewModel {
         private static readonly Regex UrlRegex = new Regex(@"^(https?://)?m\w{9}t\.net/\w{5}/(\d+)/.+$");
         public string Url { get; set; }
