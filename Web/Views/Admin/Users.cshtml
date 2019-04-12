@@ -1,0 +1,38 @@
+﻿@model MovieNight.Models.Admin.AdminUsersViewModel
+@{
+    ViewBag.Title = "User Management";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">Admin panel - User Management</h1>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var user in Model.Users) {
+                <tr>
+                    <th scope="row">@user.Id</th>
+                    <td>@user.Username</td>
+                    <td>@user.IsAdmin</td>
+                    <td>
+                        <form asp-action="Users" method="post">
+                            <input type="hidden" asp-for="Id" value="@user.Id"/>
+                            <button type="submit" class="btn btn-sm btn-danger">X</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

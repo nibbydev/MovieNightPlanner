@@ -1,0 +1,47 @@
+﻿@model MovieNight.Models.Admin.AdminSubmissionsViewModel
+@{
+    ViewBag.Title = "Submission Management";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">Admin panel - Submission Management</h1>
+</div>
+
+<div class="row">
+    <div class="col">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Added by</th>
+                <th scope="col">Reset votes</th>
+                <th scope="col">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var submission in Model.Submissions) {
+                <tr>
+                    <th scope="row">@submission.Id</th>
+                    <td>@submission.Title</td>
+                    <td>@submission.User.Username</td>
+                    <td>
+                        <form asp-action="Submissions" method="post">
+                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
+                            <input type="hidden" asp-for="Action" value="reset"/>
+                            <button type="submit" class="btn btn-sm btn-warning">X</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-action="Submissions" method="post">
+                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
+                            <input type="hidden" asp-for="Action" value="delete"/>
+                            <button type="submit" class="btn btn-sm btn-danger">X</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
