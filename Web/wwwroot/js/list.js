@@ -1,4 +1,4 @@
-﻿$("#modal-url").change(getAndVerifyInputs);
+﻿$("#modal-url").on('input', getAndVerifyInputs);
 $("#modal-submit").click(submit);
 
 function submit() {
