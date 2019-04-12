@@ -23,7 +23,7 @@ namespace MovieNight.Controllers {
         [HttpPost]
         public IActionResult Vote(ListViewModel model) {
             if (!IsAuthenticated()) {
-                return Redirect(Url.Content("~/"));
+                return BadRequest();
             }
             
             model.AddVoteToDb(_ctx, GetUsername());
@@ -35,7 +35,7 @@ namespace MovieNight.Controllers {
         [HttpPost]
         public IActionResult Add(ListNewViewModel model) {
             if (!IsAuthenticated()) {
-                return Redirect(Url.Content("~/"));
+                return BadRequest();
             }
             
             // Check if input is ok
@@ -53,6 +53,10 @@ namespace MovieNight.Controllers {
         
         [HttpGet]
         public IActionResult New() {
+            if (!IsAuthenticated()) {
+                return Redirect(Url.Content("~/"));
+            }
+            
             return View();
         }
         
