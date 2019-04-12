@@ -64,9 +64,6 @@ namespace DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("now()");
 
-                    b.Property<string>("Salt")
-                        .IsRequired();
-
                     b.Property<string>("Secret")
                         .IsRequired();
 
