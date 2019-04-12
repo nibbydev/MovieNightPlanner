@@ -31,22 +31,6 @@ namespace MovieNight.Controllers {
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult Users(AdminUsersViewModel model) {
-            if (!IsAdmin()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
-                return RedirectToAction("Status", "Home", statusModel);
-            }
-
-            if (!model.DeleteUser(_ctx, out var msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
-            }
-
-            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
-        }
-
-
         [HttpGet]
         public IActionResult Submissions() {
             if (!IsAdmin()) {
@@ -74,7 +58,21 @@ namespace MovieNight.Controllers {
 
             return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
         }
+        
+        [HttpPost]
+        public IActionResult Users(AdminUsersViewModel model) {
+            if (!IsAdmin()) {
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
+            }
 
+            if (!model.DoAction(_ctx, out var msg)) {
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
+            }
+
+            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
+        }
 
         public bool IsAuthenticated() {
             return HttpContext.Session.GetString("username") != null;

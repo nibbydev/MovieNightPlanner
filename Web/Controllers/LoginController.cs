@@ -43,24 +43,7 @@ namespace MovieNight.Controllers {
             }
             
             SetSession(user);
-            var statusModel2 = new StatusViewModel {IsError = false, Message = "Successfully logged in"};
-            return RedirectToAction("Status", "Home", statusModel2);
-        }
-        
-        [HttpPost]
-        public IActionResult Register(LoginViewModel model) {
-            if (IsAuthenticated()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Already logged in"};
-                return RedirectToAction("Status", "Home", statusModel);
-            }
-            
-            if (!model.Register(_ctx, out var user, out var msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
-            }
-            
-            SetSession(user);
-            var statusModel2 = new StatusViewModel {IsError = false, Message = "Successfully registered"};
+            var statusModel2 = new StatusViewModel {IsError = false, Message = msg};
             return RedirectToAction("Status", "Home", statusModel2);
         }
 

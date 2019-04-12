@@ -12,37 +12,6 @@ namespace MovieNight.Models {
         public string Password { get; set; }
         
         public LoginViewModel() {}
-
-        public bool Register(MlContext ctx, out User user, out string msg) {
-            user = null;
-            
-            if (!VerifyInput(out msg)) {
-                return false;
-            }
-            
-            user = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username));
-            if (user != null) {
-                msg = "Account already exists";
-                return false;
-            }
-
-            try {
-                user = new User {
-                    Username = Username,
-                    Secret = Utility.Security.HashPassword(Password),
-                    IsAdmin = false
-                };
-                
-                ctx.Users.Add(user);
-                ctx.SaveChanges();
-            } catch (Exception ex) {
-                msg = ex.Message;
-                return false;
-            }
-
-            msg = "Account created";
-            return true;
-        }
         
         public bool Login(MlContext ctx, out User user, out string msg) {
             user = null;
@@ -56,6 +25,22 @@ namespace MovieNight.Models {
             if (user == null) {
                 msg = "No user by that name";
                 return false;
+            }
+
+            // If user has no password set, treat is as registration
+            if (string.IsNullOrEmpty(user.Secret)) {
+                user.Secret = Utility.Security.HashPassword(Password);
+                
+                try {
+                    ctx.Users.Update(user);
+                    ctx.SaveChanges();
+                } catch (Exception ex) {
+                    msg = ex.Message;
+                    return false;
+                }
+                
+                msg = "Account created";
+                return true;
             }
 
             if (!Utility.Security.VerifyHashedPassword(user.Secret, Password)) {

@@ -13,7 +13,7 @@ namespace DAL.Domain {
         [Required, MinLength(3), MaxLength(32)]
         public string Username { get; set; }
 
-        [Required] public string Secret { get; set; }
+        public string Secret { get; set; }
         
         [Required] public bool IsAdmin { get; set; }
     }

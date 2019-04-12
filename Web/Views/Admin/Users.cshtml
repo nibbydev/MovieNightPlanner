@@ -15,7 +15,7 @@
                 <th scope="col">Id</th>
                 <th scope="col">Username</th>
                 <th scope="col">Admin</th>
-                <th scope="col">Delete</th>
+                <th scope="col" colspan="2">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -25,9 +25,26 @@
                     <td>@user.Username</td>
                     <td>@user.IsAdmin</td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Users" method="post">
+                        <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
                             <input type="hidden" asp-for="Id" value="@user.Id"/>
-                            <button type="submit" class="btn btn-sm btn-danger">X</button>
+                            <input type="hidden" asp-for="Action" value="delete"/>
+                            @if (user.IsAdmin) {
+                                <button disabled type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            } else {
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            }
+                           
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
+                            <input type="hidden" asp-for="Id" value="@user.Id"/>
+                            <input type="hidden" asp-for="Action" value="reset"/>
+                            @if (user.Secret == null) {
+                                <button disabled type="submit" class="btn btn-sm btn-danger">Reset password</button>
+                            } else {
+                                <button type="submit" class="btn btn-sm btn-danger">Reset password</button>
+                            }
                         </form>
                     </td>
                 </tr>

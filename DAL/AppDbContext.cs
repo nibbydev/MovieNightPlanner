@@ -30,14 +30,8 @@ namespace DAL {
                 new User {
                     Id = 1,
                     Username = "admin",
-                    Secret = "AQAAAAEAACcQAAAAEJF5fNmVVy9dOuPkPazUujaDPAm5biKWwwVc0lH/fS9+t1Ixpqsy1klZ/rZXKBTQtA==",
+                    Secret = null,    // Pass will be set on first login
                     IsAdmin = true
-                },
-                new User {
-                    Id = 2,
-                    Username = "user",
-                    Secret = "AQAAAAEAACcQAAAAELF/AS19WYRi8bYpl5oEULgnakHX2QJXtYEBDzDHir4XTZLjv9V4KEt0DplDqSpZ7A==",
-                    IsAdmin = false
                 });
 
             // https://github.com/aspnet/EntityFrameworkCore/issues/14051

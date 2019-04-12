@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 namespace MovieNight.Models.Admin {
     public class AdminSubmissionsViewModel {
         public List<Submission> Submissions { get; set; }
-        public int Id { get; set; }
         public string Action { get; set; }
+        public int Id { get; set; }
 
         public AdminSubmissionsViewModel() { }
 
