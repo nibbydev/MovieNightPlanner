@@ -22,6 +22,9 @@ namespace MovieNight.Models {
             // Count votes
             Submissions.ForEach(t => t.UpVotes = t.Votes.Count(u => u.Value));
             Submissions.ForEach(t => t.DownVotes = t.Votes.Count(u => !u.Value));
+            
+            // Sort by total sum of votes
+            Submissions.Sort((i, j) => (i.UpVotes - i.DownVotes).CompareTo(j.UpVotes - j.DownVotes));
         }
 
         public bool AddVoteToDb(MlContext ctx, string username) {

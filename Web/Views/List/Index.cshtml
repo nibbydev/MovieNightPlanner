@@ -1,4 +1,6 @@
-﻿@model ListViewModel
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model ListViewModel
 
 @{
     ViewBag.Title = "List";
@@ -19,37 +21,55 @@
                         <tbody>
                         <tr>
                             <td>Score</td>
-                            <td><small>@Html.DisplayFor(t => item.Score)</small></td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Score)</small>
+                            </td>
                         </tr>
                         <tr>
                             <td>Duration</td>
-                            <td><small>@Html.DisplayFor(t => item.Duration)</small></td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Duration)</small>
+                            </td>
                         </tr>
                         <tr>
                             <td>Rating</td>
-                            <td><small>@Html.DisplayFor(t => item.Rating)</small></td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Rating)</small>
+                            </td>
                         </tr>
                         <tr>
                             <td>Genres</td>
-                            <td><small>@Html.DisplayFor(t => item.Genres)</small></td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Genres)</small>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                     <hr/>
-                    <small class="text-muted">Suggested by @Html.DisplayFor(t=>item.User.Username)</small>
+                    <small class="text-muted">Suggested by @Html.DisplayFor(t => item.User.Username)</small>
                 </div>
+
                 <div class="row no-gutters">
                     <div class="col">
                         <form asp-controller="List" asp-action="Vote">
                             <input asp-for="Id" type="hidden" value="@item.Id"/>
                             <input asp-for="Vote" type="hidden" value="@true"/>
 
-                            <button type="submit" class="btn btn-block btn-light">
-                                <i class="fa fa-thumbs-up mr-2"></i>
-                                @if (item.UpVotes > 0) {
-                                    <span class="badge badge-success">@Html.DisplayFor(t =>item.UpVotes)</span>
-                                }
-                            </button>
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("username") != null) {
+                                <button type="submit" class="btn btn-block btn-light">
+                                    <i class="fa fa-thumbs-up mr-2"></i>
+                                    @if (item.UpVotes > 0) {
+                                        <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                    }
+                                </button>
+                            } else {
+                                <button disabled type="submit" class="btn btn-block btn-light">
+                                    <i class="fa fa-thumbs-up mr-2"></i>
+                                    @if (item.UpVotes > 0) {
+                                        <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                    }
+                                </button>
+                            }
                         </form>
                     </div>
                     <div class="col">
@@ -57,15 +77,26 @@
                             <input asp-for="Id" type="hidden" value="@item.Id"/>
                             <input asp-for="Vote" type="hidden" value="@false"/>
 
-                            <button type="submit" class="btn btn-block btn-light border-right">
-                                <i class="fa fa-thumbs-down mr-2"></i>
-                                @if (item.DownVotes > 0) {
-                                    <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
-                                }
-                            </button>
+                            @if (HttpContextAccessor.HttpContext.Session.GetString("username") != null) {
+                                <button type="submit" class="btn btn-block btn-light border-right">
+                                    <i class="fa fa-thumbs-down mr-2"></i>
+                                    @if (item.DownVotes > 0) {
+                                        <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                    }
+                                </button>
+                            } else {
+                                <button disabled class="btn btn-block btn-light border-right">
+                                    <i class="fa fa-thumbs-down mr-2"></i>
+                                    @if (item.DownVotes > 0) {
+                                        <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                    }
+                                </button>
+                            }
+
                         </form>
                     </div>
                 </div>
+
             </div>
         </div>
     }

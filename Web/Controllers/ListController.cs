@@ -9,10 +9,6 @@ namespace MovieNight.Controllers {
         
         [HttpGet]
         public IActionResult Index() {
-            if (!IsAuthenticated()) {
-                return Redirect(Url.Content("~/"));
-            }
-            
             var model = new ListViewModel();
             model.GetSubmissions(_ctx);
 
