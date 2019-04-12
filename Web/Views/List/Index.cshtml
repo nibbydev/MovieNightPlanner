@@ -4,10 +4,9 @@
 
 @{
     ViewBag.Title = "List";
+    ViewBag.JumbotronTitle = "Planned";
+    ViewBag.JumbotronSubTitle = "Recommendations and suggestions for the next movie night";
 }
-<div class="jumbotron">
-    <h1 class="display-4">Planned movies</h1>
-</div>
 
 <div class="row">
     @foreach (var item in Model.Submissions) {
@@ -115,7 +114,11 @@
 </div>
 
 <div class="jumbotron">
-    <h1 class="display-4">Watched movies</h1>
+    <div class="container">
+        <h1 class="display-4">Watched</h1>
+        <hr/>
+        <p class="lead">Movies from previous weekends</p>
+    </div>
 </div>
 
 <div class="row">

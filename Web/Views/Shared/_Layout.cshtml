@@ -59,6 +59,17 @@
 </header>
 <div class="container">
     <main role="main" class="pb-3">
+        @if (ViewBag.JumbotronTitle != null) {
+            <div class="jumbotron">
+                <div class="container">
+                    <h1 class="display-4">@ViewBag.JumbotronTitle</h1>
+                    @if (ViewBag.JumbotronSubTitle != null) {
+                        <hr/>
+                        <p class="lead">@ViewBag.JumbotronSubTitle</p>
+                    }
+                </div>
+            </div>
+        }
         @RenderBody()
     </main>
 </div>
