@@ -11,7 +11,8 @@ namespace MovieNight.Controllers {
         [HttpGet]
         public IActionResult Index(LoginViewModel model = null) {
             if (IsAuthenticated()) {
-                return Redirect(Url.Content("~/"));
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
 
             return View(model);
@@ -20,39 +21,47 @@ namespace MovieNight.Controllers {
         [HttpGet]
         public IActionResult Logout() {
             if (!IsAuthenticated()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             HttpContext.Session.Clear();
-            return Redirect(Url.Content("~/"));
+            var statusModel2 = new StatusViewModel {IsError = false, Message = "Successfully logged out"};
+            return RedirectToAction("Status", "Home", statusModel2);
         }
         
         [HttpPost]
         public IActionResult Login(LoginViewModel model) {
             if (IsAuthenticated()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Already logged in"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             if (!model.Login(_ctx, out var user, out var msg)) {
-                return BadRequest(msg);
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             SetSession(user);
-            return Redirect(Url.Content("~/"));
+            var statusModel2 = new StatusViewModel {IsError = false, Message = "Successfully logged in"};
+            return RedirectToAction("Status", "Home", statusModel2);
         }
         
         [HttpPost]
         public IActionResult Register(LoginViewModel model) {
             if (IsAuthenticated()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Already logged in"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             if (!model.Register(_ctx, out var user, out var msg)) {
-                return BadRequest(msg);
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             SetSession(user);
-            return Redirect(Url.Content("~/"));
+            var statusModel2 = new StatusViewModel {IsError = false, Message = "Successfully registered"};
+            return RedirectToAction("Status", "Home", statusModel2);
         }
 
         private void SetSession(User user) {

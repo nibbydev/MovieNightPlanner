@@ -1,0 +1,22 @@
+﻿@model StatusViewModel
+@{
+    ViewData["Title"] = "Status";
+}
+
+
+<div class="jumbotron">
+    @if (Model.IsError) {
+        <h1 class="display-4">Oops!</h1>
+        <p class="lead">An error occurred!</p>
+    } else {
+        <h1 class="display-4">Info</h1>
+    }
+    <hr/>
+    @if (Model.Message != null) {
+        if (Model.IsError) {
+            <p class="text-danger">@Html.DisplayFor(t => t.Message)</p>
+        } else {
+            <p class="text-success">@Html.DisplayFor(t => t.Message)</p>
+        }
+    }
+</div>

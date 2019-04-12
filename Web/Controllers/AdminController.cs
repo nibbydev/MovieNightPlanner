@@ -10,7 +10,8 @@ namespace MovieNight.Controllers {
         [HttpGet]
         public IActionResult Index() {
             if (!IsAdmin()) {
-                return Redirect(Url.Content("~/"));
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             return View();
@@ -19,42 +20,48 @@ namespace MovieNight.Controllers {
         [HttpPost]
         public IActionResult ResetVotes(AdminViewModel model) {
             if (!IsAdmin()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
             if (!model.ResetVotes(_ctx, out var msg)) {
-                return BadRequest(msg);
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
             }
             
-            return RedirectToAction("Index");
+            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
         }
         
         [HttpPost]
         public IActionResult DeleteEntry(AdminViewModel model) {
             if (!IsAdmin()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
 
             if (!model.DeleteSubmission(_ctx, out var msg)) {
-                return BadRequest(msg);
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
         }
         
         [HttpPost]
         public IActionResult DeleteUser(AdminViewModel model) {
             if (!IsAdmin()) {
-                return BadRequest();
+                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
+                return RedirectToAction("Status", "Home", statusModel);
             }
 
             if (!model.DeleteUser(_ctx, out var msg)) {
-                return BadRequest(msg);
+                var statusModel = new StatusViewModel {IsError = true, Message = msg};
+                return RedirectToAction("Status", "Home", statusModel);
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
         }
-
+        
         public bool IsAuthenticated() {
             return HttpContext.Session.GetString("username") != null;
         }
