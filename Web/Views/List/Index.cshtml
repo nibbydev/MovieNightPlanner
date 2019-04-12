@@ -35,8 +35,8 @@
                         </tr>
                         </tbody>
                     </table>
-
-
+                    <hr/>
+                    <small class="text-muted">Suggested by @Html.DisplayFor(t=>item.User.Username)</small>
                 </div>
                 <div class="row no-gutters">
                     <div class="col">
@@ -47,7 +47,7 @@
                             <button type="submit" class="btn btn-block btn-light">
                                 <i class="fa fa-thumbs-up mr-2"></i>
                                 @if (item.UpVotes > 0) {
-                                    <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                    <span class="badge badge-success">@Html.DisplayFor(t =>item.UpVotes)</span>
                                 }
                             </button>
                         </form>

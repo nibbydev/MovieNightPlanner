@@ -13,7 +13,7 @@ namespace NetGroupCV.Models {
         
         public LoginViewModel() {}
 
-        public bool CreateAccount(DbContext ctx, out string msg) {
+        public bool Register(MlContext ctx, out string msg) {
             if (!VerifyInput(out msg)) {
                 return false;
             }
@@ -39,7 +39,7 @@ namespace NetGroupCV.Models {
             return true;
         }
         
-        public bool VerifyLogin(DbContext ctx, out string msg) {
+        public bool Login(MlContext ctx, out string msg) {
             if (!VerifyInput(out msg)) {
                 return false;
             }
@@ -59,7 +59,7 @@ namespace NetGroupCV.Models {
             return true;
         }
 
-        public bool VerifyInput(out string msg) {
+        private bool VerifyInput(out string msg) {
             if (string.IsNullOrEmpty(Username) || string.IsNullOrWhiteSpace(Username)) {
                 msg = "Missing username";
                 return false;

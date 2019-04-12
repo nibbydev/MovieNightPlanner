@@ -4,12 +4,11 @@
 // Write your JavaScript code.
 
 $("#modal-url").change(getAndVerifyInputs);
-$("#modal-username").change(getAndVerifyInputs);
 $("#modal-submit").click(submit);
 
 function submit() {
     const data = getAndVerifyInputs();
-    if (!data.Url || !data.Name) {
+    if (!data.Url) {
         return;
     }
 
@@ -45,11 +44,9 @@ function submit() {
 
 function getAndVerifyInputs() {
     const urlPattern = /^(https?:\/\/)?m\w{9}t\.net\/\w{5}\/\d+\/.+$/;
-    const namePattern = /^[a-zA-Z_]{3,32}$/;
     
     return {
-        Url: getAndVerify("#modal-url", urlPattern),
-        Name: getAndVerify("#modal-username", namePattern)
+        Url: getAndVerify("#modal-url", urlPattern)
     };
 }
 

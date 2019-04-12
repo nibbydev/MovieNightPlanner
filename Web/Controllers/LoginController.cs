@@ -5,7 +5,7 @@ using NetGroupCV.Models;
 
 namespace NetGroupCV.Controllers {
     public class LoginController : Controller {
-        private readonly DbContext _ctx = new DbContext();
+        private readonly MlContext _ctx = new MlContext();
         
         [HttpGet]
         public IActionResult Index(LoginViewModel model = null) {
@@ -32,7 +32,7 @@ namespace NetGroupCV.Controllers {
                 return BadRequest();
             }
             
-            if (!model.VerifyLogin(_ctx, out var msg)) {
+            if (!model.Login(_ctx, out var msg)) {
                 return BadRequest(msg);
             }
             
@@ -46,7 +46,7 @@ namespace NetGroupCV.Controllers {
                 return BadRequest();
             }
             
-            if (!model.CreateAccount(_ctx, out var msg)) {
+            if (!model.Register(_ctx, out var msg)) {
                 return BadRequest(msg);
             }
             

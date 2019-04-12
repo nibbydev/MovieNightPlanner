@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL {
-    public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext {
-        public DbContext() { }
+    public partial class MlContext : Microsoft.EntityFrameworkCore.DbContext {
+        public MlContext() { }
 
-        public DbContext(DbContextOptions<DbContext> options)
+        public MlContext(DbContextOptions<MlContext> options)
             : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {

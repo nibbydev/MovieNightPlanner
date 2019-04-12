@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DAL;
 using DAL.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace NetGroupCV.Models {
     public class ListViewModel {
@@ -10,39 +11,60 @@ namespace NetGroupCV.Models {
         public int Id { get; set; }
         public bool Vote { get; set; }
 
-        public ListViewModel() {
+        public ListViewModel() { }
+
+        public void GetSubmissions(MlContext ctx) {
+            Submissions = ctx.Submissions
+                .Include(t => t.User)
+                .Include(t => t.Votes)
+                .ToList();
+
+            // Count votes
+            Submissions.ForEach(t => t.UpVotes = t.Votes.Count(u => u.Value));
+            Submissions.ForEach(t => t.DownVotes = t.Votes.Count(u => !u.Value));
         }
 
-        public void GetSubmissions(DbContext ctx) {
-            Submissions = ctx.Submissions.ToList();
+        public bool AddVoteToDb(MlContext ctx, string username) {
+            var userId = ctx.Users.First(t => t.Username.Equals(username)).Id;
+            var vote = ctx.Votes.FirstOrDefault(t => t.UserId == userId && t.SubmissionId == Id);
 
-            // Grab vote count for each submission
-            foreach (var submission in Submissions) {
-                var votes = ctx.Votes
-                    .Where(t => t.SubmissionId == submission.Id)
-                    .Select(t=>t.Value)
-                    .ToList();
+            if (vote != null) {
+                // Remove vote
+                if (vote.Value == Vote) {
+                    try {
+                        ctx.Votes.Remove(vote);
+                        ctx.SaveChanges();
+                        return true;
+                    } catch (Exception) {
+                        return false;
+                    }
+                }
 
-                submission.UpVotes = votes.Count(v => v);
-                submission.DownVotes = votes.Count - submission.UpVotes;
+                // Attempt to update vote
+                try {
+                    vote.Value = Vote;
+                    ctx.Votes.Update(vote);
+                    ctx.SaveChanges();
+                    return true;
+                } catch (Exception) {
+                    return false;
+                }
             }
-        }
 
-        public bool AddVoteToDb(DbContext ctx) {
-            var vote = new Vote {
+            vote = new Vote {
                 SubmissionId = Id,
-                Value = Vote
+                Value = Vote,
+                UserId = ctx.Users.First(t => t.Username.Equals(username)).Id
             };
-            
+
             // Attempt to add to database
             try {
                 ctx.Votes.Add(vote);
                 ctx.SaveChanges();
+                return true;
             } catch (Exception) {
                 return false;
             }
-
-            return true;
         }
     }
 }

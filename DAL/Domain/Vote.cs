@@ -12,8 +12,10 @@ namespace DAL.Domain {
 
         public Submission Submission { get; set; }
         public int SubmissionId { get; set; }
+        
+        public User User { get; set; }
+        public int UserId { get; set; }
 
         public bool Value { get; set; }
-        public long Ip { get; set; }
     }
 }

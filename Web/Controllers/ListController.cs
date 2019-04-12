@@ -5,7 +5,7 @@ using NetGroupCV.Models;
 
 namespace NetGroupCV.Controllers {
     public class ListController : Controller {
-        private readonly DbContext _ctx = new DbContext();
+        private readonly MlContext _ctx = new MlContext();
         
         [HttpGet]
         public IActionResult Index() {
@@ -26,7 +26,7 @@ namespace NetGroupCV.Controllers {
                 return Redirect(Url.Content("~/"));
             }
             
-            model.AddVoteToDb(_ctx);
+            model.AddVoteToDb(_ctx, GetUsername());
             return RedirectToAction("Index");
         }
 
@@ -44,7 +44,7 @@ namespace NetGroupCV.Controllers {
             }
             
             // Add to database
-            if (!model.AddToDb(_ctx, out msg)) {
+            if (!model.AddToDb(_ctx, HttpContext.Session.GetString("username"), out msg)) {
                 return BadRequest(msg);
             }
 
@@ -59,7 +59,11 @@ namespace NetGroupCV.Controllers {
         public bool IsAuthenticated() {
             // I guess normally people would use User.Identity.IsAuthenticated but I
             // didn't really have time to read about and set up the authentication service
-            return HttpContext.Session.GetString("username") != null;
+            return GetUsername() != null;
+        }
+
+        public string GetUsername() {
+            return HttpContext.Session.GetString("username");
         }
     }
 }

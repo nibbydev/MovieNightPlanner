@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,8 @@ namespace DAL.Domain {
         [Column(Order = 2), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime Time { get; set; }
 
-        [MinLength(3), MaxLength(32)] public string AddedBy { get; set; }
+        public User User { get; set; }
+        public int UserId { get; set; }
         // todo: more strict constraints
 
         public double Score { get; set; }
@@ -23,6 +25,8 @@ namespace DAL.Domain {
         public string Rating { get; set; }
         public string Synopsis { get; set; }
         public string Genres { get; set; }
+        
+        public List<Vote> Votes { get; set; }
 
         [NotMapped] public int UpVotes { get; set; }
         [NotMapped] public int DownVotes { get; set; }
