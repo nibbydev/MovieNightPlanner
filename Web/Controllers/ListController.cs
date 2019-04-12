@@ -10,11 +10,10 @@ namespace MovieNight.Controllers {
         [HttpGet]
         public IActionResult Index() {
             var model = new ListViewModel();
-            model.GetSubmissions(_ctx);
+            model.GetSubmissions(_ctx, GetUsername());
 
             return View(model);
         }
-        
         
         [HttpPost]
         public IActionResult Vote(ListViewModel model) {
@@ -27,8 +26,6 @@ namespace MovieNight.Controllers {
             return RedirectToAction("Index");
         }
 
-        
-        
         [HttpPost]
         public IActionResult Add(ListNewViewModel model) {
             if (!IsAuthenticated()) {

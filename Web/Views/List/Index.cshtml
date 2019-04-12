@@ -59,14 +59,18 @@
                                 <button type="submit" class="btn btn-block btn-light">
                                     <i class="fa fa-thumbs-up mr-2"></i>
                                     @if (item.UpVotes > 0) {
-                                        <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                        if (item.UserHasVotedFor) {
+                                            <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                        } else {
+                                            <span class="badge badge-secondary">@Html.DisplayFor(t => item.UpVotes)</span>
+                                        }
                                     }
                                 </button>
                             } else {
                                 <button disabled type="submit" class="btn btn-block btn-light">
                                     <i class="fa fa-thumbs-up mr-2"></i>
                                     @if (item.UpVotes > 0) {
-                                        <span class="badge badge-success">@Html.DisplayFor(t => item.UpVotes)</span>
+                                        <span class="badge badge-secondary">@Html.DisplayFor(t => item.UpVotes)</span>
                                     }
                                 </button>
                             }
@@ -81,14 +85,18 @@
                                 <button type="submit" class="btn btn-block btn-light border-right">
                                     <i class="fa fa-thumbs-down mr-2"></i>
                                     @if (item.DownVotes > 0) {
-                                        <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                        if (item.UserHasVotedAgainst) {
+                                            <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                        } else {
+                                            <span class="badge badge-secondary">@Html.DisplayFor(t => item.DownVotes)</span>
+                                        }
                                     }
                                 </button>
                             } else {
                                 <button disabled class="btn btn-block btn-light border-right">
                                     <i class="fa fa-thumbs-down mr-2"></i>
                                     @if (item.DownVotes > 0) {
-                                        <span class="badge badge-danger">@Html.DisplayFor(t => item.DownVotes)</span>
+                                        <span class="badge badge-secondary">@Html.DisplayFor(t => item.DownVotes)</span>
                                     }
                                 </button>
                             }
