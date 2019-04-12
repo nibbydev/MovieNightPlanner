@@ -26,14 +26,14 @@
                     <td>@submission.Title</td>
                     <td>@submission.User.Username</td>
                     <td>
-                        <form asp-action="Submissions" method="post">
+                        <form asp-antiforgery="true" asp-action="Submissions" method="post">
                             <input type="hidden" asp-for="Id" value="@submission.Id"/>
                             <input type="hidden" asp-for="Action" value="reset"/>
                             <button type="submit" class="btn btn-sm btn-warning">X</button>
                         </form>
                     </td>
                     <td>
-                        <form asp-action="Submissions" method="post">
+                        <form asp-antiforgery="true" asp-action="Submissions" method="post">
                             <input type="hidden" asp-for="Id" value="@submission.Id"/>
                             <input type="hidden" asp-for="Action" value="delete"/>
                             <button type="submit" class="btn btn-sm btn-danger">X</button>

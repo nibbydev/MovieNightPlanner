@@ -25,7 +25,7 @@
                     <td>@user.Username</td>
                     <td>@user.IsAdmin</td>
                     <td>
-                        <form asp-action="Users" method="post">
+                        <form asp-antiforgery="true" asp-action="Users" method="post">
                             <input type="hidden" asp-for="Id" value="@user.Id"/>
                             <button type="submit" class="btn btn-sm btn-danger">X</button>
                         </form>
