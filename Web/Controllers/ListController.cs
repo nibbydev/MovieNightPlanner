@@ -2,6 +2,7 @@ using DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieNight.Models;
+using MovieNight.Models.List;
 
 namespace MovieNight.Controllers {
     public class ListController : Controller {

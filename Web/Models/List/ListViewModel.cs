@@ -5,7 +5,7 @@ using DAL;
 using DAL.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace MovieNight.Models {
+namespace MovieNight.Models.List {
     public class ListViewModel {
         public List<Submission> Submissions { get; set; }
         public int Id { get; set; }
