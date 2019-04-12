@@ -7,6 +7,7 @@ using DAL.Domain;
 namespace MovieNight.Models.Admin {
     public class AdminUsersViewModel {
         public List<User> Users { get; set; }
+        public string Username { get; set; }
         public string Action { get; set; }
         public int Id { get; set; }
 
@@ -24,10 +25,35 @@ namespace MovieNight.Models.Admin {
                     return DeleteUser(ctx, out msg);
                 case "reset":
                     return ResetPassword(ctx, out msg);
+                case "create":
+                    return CreateUser(ctx, out msg);
                 default:
                     msg = "Invalid action";
                     return false;
             }
+        }
+        
+        private bool CreateUser(MlContext ctx, out string msg) {
+            var user = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username));
+            if (user != null) {
+                msg = "User already exists";
+                return false;
+            }
+            
+            user = new User {
+                Username = Username
+            };
+
+            try {
+                ctx.Users.Add(user);
+                ctx.SaveChanges();
+            } catch (Exception e) {
+                msg = e.Message;
+                return false;
+            }
+
+            msg = "User created";
+            return true;
         }
         
         private bool DeleteUser(MlContext ctx, out string msg) {

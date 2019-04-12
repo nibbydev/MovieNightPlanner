@@ -49,6 +49,20 @@
                     </td>
                 </tr>
             }
+            <tr>
+                <form asp-antiforgery="true" asp-action="Users" method="post">
+                    <input type="hidden" asp-for="Action" value="create"/>
+                    
+                    <th scope="row">#</th>
+                    <td>
+                        <input asp-for="Username" placeholder="Username" class="form-control form-control-sm"/>
+                    </td>
+                    <td>@false</td>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-sm btn-success">Create new</button>
+                    </td>
+                </form>
+            </tr>
             </tbody>
         </table>
     </div>
