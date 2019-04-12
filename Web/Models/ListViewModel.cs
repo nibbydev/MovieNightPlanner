@@ -31,7 +31,7 @@ namespace MovieNight.Models {
             }
 
             // Sort by total sum of votes
-            Submissions.Sort((i, j) => (i.UpVotes - i.DownVotes).CompareTo(j.UpVotes - j.DownVotes));
+            Submissions.Sort((j, i) => (i.UpVotes - i.DownVotes).CompareTo(j.UpVotes - j.DownVotes));
         }
 
         public bool AddVoteToDb(MlContext ctx, string username) {
