@@ -9,8 +9,7 @@ namespace NetGroupCV.Controllers {
         
         [HttpGet]
         public IActionResult Index(LoginViewModel model = null) {
-            // User is already signed in, redirect to front page
-            if (HttpContext.Session.GetString("username") != null) {
+            if (IsAuthenticated()) {
                 return Redirect(Url.Content("~/"));
             }
 
@@ -19,30 +18,50 @@ namespace NetGroupCV.Controllers {
         
         [HttpGet]
         public IActionResult Logout() {
+            if (!IsAuthenticated()) {
+                return BadRequest();
+            }
+            
             HttpContext.Session.Clear();
             return Redirect(Url.Content("~/"));
         }
         
         [HttpPost]
         public IActionResult Login(LoginViewModel model) {
-            if (model.VerifyLogin(_ctx, out var msg)) {
-                SetSession(model);
+            if (IsAuthenticated()) {
+                return BadRequest();
             }
-
-            return BadRequest(msg);
+            
+            if (!model.VerifyLogin(_ctx, out var msg)) {
+                return BadRequest(msg);
+            }
+            
+            SetSession(model);
+            return Redirect(Url.Content("~/"));
         }
         
         [HttpPost]
         public IActionResult Register(LoginViewModel model) {
-            if (model.CreateAccount(_ctx, out var msg)) {
-                SetSession(model);
+            if (IsAuthenticated()) {
+                return BadRequest();
             }
-
-            return BadRequest(msg);
+            
+            if (!model.CreateAccount(_ctx, out var msg)) {
+                return BadRequest(msg);
+            }
+            
+            SetSession(model);
+            return Redirect(Url.Content("~/"));
         }
 
         private void SetSession(LoginViewModel model) {
             HttpContext.Session.SetString("username", model.Username);
+        }
+
+        public bool IsAuthenticated() {
+            // I guess normally people would use User.Identity.IsAuthenticated but I
+            // didn't really have time to read about and set up the authentication service
+            return HttpContext.Session.GetString("username") != null;
         }
     }
 }

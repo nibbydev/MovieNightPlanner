@@ -1,4 +1,5 @@
 using DAL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NetGroupCV.Models;
 
@@ -8,6 +9,10 @@ namespace NetGroupCV.Controllers {
         
         [HttpGet]
         public IActionResult Index() {
+            if (!IsAuthenticated()) {
+                return Redirect(Url.Content("~/"));
+            }
+            
             var model = new ListViewModel();
             model.GetSubmissions(_ctx);
 
@@ -17,6 +22,10 @@ namespace NetGroupCV.Controllers {
         
         [HttpPost]
         public IActionResult Vote(ListViewModel model) {
+            if (!IsAuthenticated()) {
+                return Redirect(Url.Content("~/"));
+            }
+            
             model.AddVoteToDb(_ctx);
             return RedirectToAction("Index");
         }
@@ -25,6 +34,10 @@ namespace NetGroupCV.Controllers {
         
         [HttpPost]
         public IActionResult Add(ListNewViewModel model) {
+            if (!IsAuthenticated()) {
+                return Redirect(Url.Content("~/"));
+            }
+            
             // Check if input is ok
             if (!model.Verify(out var msg)) {
                 return BadRequest(msg);
@@ -41,6 +54,12 @@ namespace NetGroupCV.Controllers {
         [HttpGet]
         public IActionResult New() {
             return View();
+        }
+        
+        public bool IsAuthenticated() {
+            // I guess normally people would use User.Identity.IsAuthenticated but I
+            // didn't really have time to read about and set up the authentication service
+            return HttpContext.Session.GetString("username") != null;
         }
     }
 }
