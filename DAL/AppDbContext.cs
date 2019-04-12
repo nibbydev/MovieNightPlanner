@@ -20,15 +20,24 @@ namespace DAL {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.HasAnnotation("ProductVersion", "2.2.3-servicing-35854");
-            
+
             modelBuilder.Entity<Submission>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<Vote>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<User>().Property(e => e.Joined).HasDefaultValueSql("now()");
-            
 
-            // https://github.com/aspnet/EntityFrameworkCore/issues/12278
-            //modelBuilder.Entity<Vote>().Property(e => e.Value).HasColumnType("BIT(1)").HasConversion<int>();
-            
+            // Seed accounts
+            modelBuilder.Entity<User>().HasData(
+                new User {
+                    Id = 1,
+                    Username = "admin",
+                    Secret = "AQAAAAEAACcQAAAAEJF5fNmVVy9dOuPkPazUujaDPAm5biKWwwVc0lH/fS9+t1Ixpqsy1klZ/rZXKBTQtA=="
+                },
+                new User {
+                    Id = 2,
+                    Username = "user",
+                    Secret = "AQAAAAEAACcQAAAAELF/AS19WYRi8bYpl5oEULgnakHX2QJXtYEBDzDHir4XTZLjv9V4KEt0DplDqSpZ7A=="
+                });
+
             // https://github.com/aspnet/EntityFrameworkCore/issues/14051
             modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int16>());
         }
