@@ -14,5 +14,7 @@ namespace DAL.Domain {
         public string Username { get; set; }
 
         [Required] public string Secret { get; set; }
+        
+        [Required] public bool IsAdmin { get; set; }
     }
 }

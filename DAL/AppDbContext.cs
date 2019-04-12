@@ -30,16 +30,19 @@ namespace DAL {
                 new User {
                     Id = 1,
                     Username = "admin",
-                    Secret = "AQAAAAEAACcQAAAAEJF5fNmVVy9dOuPkPazUujaDPAm5biKWwwVc0lH/fS9+t1Ixpqsy1klZ/rZXKBTQtA=="
+                    Secret = "AQAAAAEAACcQAAAAEJF5fNmVVy9dOuPkPazUujaDPAm5biKWwwVc0lH/fS9+t1Ixpqsy1klZ/rZXKBTQtA==",
+                    IsAdmin = true
                 },
                 new User {
                     Id = 2,
                     Username = "user",
-                    Secret = "AQAAAAEAACcQAAAAELF/AS19WYRi8bYpl5oEULgnakHX2QJXtYEBDzDHir4XTZLjv9V4KEt0DplDqSpZ7A=="
+                    Secret = "AQAAAAEAACcQAAAAELF/AS19WYRi8bYpl5oEULgnakHX2QJXtYEBDzDHir4XTZLjv9V4KEt0DplDqSpZ7A==",
+                    IsAdmin = false
                 });
 
             // https://github.com/aspnet/EntityFrameworkCore/issues/14051
-            modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int16>());
+            modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int32>());
+            modelBuilder.Entity<User>().Property(e => e.IsAdmin).HasConversion(new BoolToZeroOneConverter<Int32>());
         }
     }
 }

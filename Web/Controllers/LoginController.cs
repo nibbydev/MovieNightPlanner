@@ -1,4 +1,5 @@
 using DAL;
+using DAL.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieNight.Models;
@@ -32,11 +33,11 @@ namespace MovieNight.Controllers {
                 return BadRequest();
             }
             
-            if (!model.Login(_ctx, out var msg)) {
+            if (!model.Login(_ctx, out var user, out var msg)) {
                 return BadRequest(msg);
             }
             
-            SetSession(model);
+            SetSession(user);
             return Redirect(Url.Content("~/"));
         }
         
@@ -46,16 +47,17 @@ namespace MovieNight.Controllers {
                 return BadRequest();
             }
             
-            if (!model.Register(_ctx, out var msg)) {
+            if (!model.Register(_ctx, out var user, out var msg)) {
                 return BadRequest(msg);
             }
             
-            SetSession(model);
+            SetSession(user);
             return Redirect(Url.Content("~/"));
         }
 
-        private void SetSession(LoginViewModel model) {
-            HttpContext.Session.SetString("username", model.Username);
+        private void SetSession(User user) {
+            HttpContext.Session.SetString("username", user.Username);
+            HttpContext.Session.SetInt32("is_admin", user.IsAdmin ? 1 : 0);
         }
 
         public bool IsAuthenticated() {

@@ -13,22 +13,27 @@ namespace MovieNight.Models {
         
         public LoginViewModel() {}
 
-        public bool Register(MlContext ctx, out string msg) {
+        public bool Register(MlContext ctx, out User user, out string msg) {
+            user = null;
+            
             if (!VerifyInput(out msg)) {
                 return false;
             }
-
-            var accountExists = ctx.Users.Where(t => t.Username.Equals(Username)).ToList().Any();
-            if (accountExists) {
+            
+            user = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username));
+            if (user != null) {
                 msg = "Account already exists";
                 return false;
             }
 
             try {
-                ctx.Users.Add(new User {
+                user = new User {
                     Username = Username,
-                    Secret = Utility.Security.HashPassword(Password)
-                });
+                    Secret = Utility.Security.HashPassword(Password),
+                    IsAdmin = false
+                };
+                
+                ctx.Users.Add(user);
                 ctx.SaveChanges();
             } catch (Exception ex) {
                 msg = ex.Message;
@@ -39,18 +44,21 @@ namespace MovieNight.Models {
             return true;
         }
         
-        public bool Login(MlContext ctx, out string msg) {
+        public bool Login(MlContext ctx, out User user, out string msg) {
+            user = null;
+            
             if (!VerifyInput(out msg)) {
                 return false;
             }
+
+            user = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username));
             
-            var dbPass = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username))?.Secret;
-            if (dbPass == null) {
+            if (user == null) {
                 msg = "No user by that name";
                 return false;
             }
 
-            if (!Utility.Security.VerifyHashedPassword(dbPass, Password)) {
+            if (!Utility.Security.VerifyHashedPassword(user.Secret, Password)) {
                 msg = "Invalid login credentials";
                 return false;
             }
