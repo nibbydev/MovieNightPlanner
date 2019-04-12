@@ -71,6 +71,15 @@ body {
   border-radius: 0.25rem;
 }
 
+.btn-light {
+  background-color: #f7f7f9;
+}
+
+.table-xs th,
+.table-xs td {
+  padding: 0.25rem;
+}
+
 .buffering {
   display: inline-block;
   width: 32px;
