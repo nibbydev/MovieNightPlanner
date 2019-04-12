@@ -1,0 +1,72 @@
+﻿@model AdminViewModel
+@{
+    ViewBag.Title = "Admin panel";
+}
+
+<div class="jumbotron">
+    <h1 class="display-4">Admin panel</h1>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card">
+            <form asp-action="DeleteUser">
+                <div class="card-body pb-0">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </div>
+                            <input asp-for="UserDeleteName" class="form-control" placeholder="Username">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-light">Delete user</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="card">
+            <form asp-action="DeleteEntry">
+                <div class="card-body pb-0">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-list"></i>
+                                </span>
+                            </div>
+                            <input asp-for="SubmissionDeleteId" class="form-control" placeholder="Id">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-light">Delete submission</button>
+            </form>
+        </div>
+    </div>
+    
+   
+    <div class="col-4">
+        <div class="card">
+            <form asp-action="ResetVotes">
+                <div class="card-body pb-0">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">
+                                    <i class="fa fa-sync"></i>
+                                </span>
+                            </div>
+                            <input asp-for="VoteResetId" class="form-control" placeholder="Id">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-light">Reset votes</button>
+            </form>
+        </div>
+    </div>
+    
+</div>
