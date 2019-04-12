@@ -15,8 +15,7 @@
                 <th scope="col">Id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Added by</th>
-                <th scope="col">Reset votes</th>
-                <th scope="col">Delete</th>
+                <th scope="col" colspan="3">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -26,17 +25,28 @@
                     <td>@submission.Title</td>
                     <td>@submission.User.Username</td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Submissions" method="post">
+                        <form asp-antiforgery="true" asp-action="Submissions" method="post" class="mr-1">
+                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
+                            <input type="hidden" asp-for="Action" value="watched"/>
+                            @if (submission.IsWatched) {
+                                <button type="submit" class="btn btn-sm btn-outline-success">Mark Unwatched</button>
+                            } else {
+                                <button type="submit" class="btn btn-sm btn-success">Mark Watched</button>
+                            }
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-antiforgery="true" asp-action="Submissions" method="post" class="mr-1">
                             <input type="hidden" asp-for="Id" value="@submission.Id"/>
                             <input type="hidden" asp-for="Action" value="reset"/>
-                            <button type="submit" class="btn btn-sm btn-warning">X</button>
+                            <button type="submit" class="btn btn-sm btn-warning">Reset votes</button>
                         </form>
                     </td>
                     <td>
                         <form asp-antiforgery="true" asp-action="Submissions" method="post">
                             <input type="hidden" asp-for="Id" value="@submission.Id"/>
                             <input type="hidden" asp-for="Action" value="delete"/>
-                            <button type="submit" class="btn btn-sm btn-danger">X</button>
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>

@@ -25,6 +25,8 @@ namespace MovieNight.Models.Admin {
                     return DeleteSubmission(ctx, out msg);
                 case "reset":
                     return ResetVotes(ctx, out msg);
+                case "watched":
+                    return ToggleWatched(ctx, out msg);
                 default:
                     msg = "Invalid action";
                     return false;
@@ -66,6 +68,27 @@ namespace MovieNight.Models.Admin {
             }
 
             msg = "Successfully reset votes";
+            return true;
+        }
+
+        private bool ToggleWatched(MlContext ctx, out string msg) {
+            var submission = ctx.Submissions.FirstOrDefault(t => t.Id.Equals(Id));
+            if (submission == null) {
+                msg = "No such submission";
+                return false;
+            }
+
+            submission.IsWatched = !submission.IsWatched;
+
+            try {
+                ctx.Submissions.Update(submission);
+                ctx.SaveChanges();
+            } catch (Exception e) {
+                msg = e.Message;
+                return false;
+            }
+
+            msg = "Successfully toggled watched state";
             return true;
         }
     }

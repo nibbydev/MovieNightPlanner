@@ -12,7 +12,6 @@ namespace DAL.Domain {
 
         public User User { get; set; }
         public int UserId { get; set; }
-        // todo: more strict constraints
 
         public double Score { get; set; }
         public string Title { get; set; }
@@ -27,6 +26,7 @@ namespace DAL.Domain {
         public string Genres { get; set; }
         
         public List<Vote> Votes { get; set; }
+        public bool IsWatched { get; set; }
 
         [NotMapped] public int UpVotes { get; set; }
         [NotMapped] public int DownVotes { get; set; }

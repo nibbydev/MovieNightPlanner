@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using DAL.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL {
-    public partial class MlContext : Microsoft.EntityFrameworkCore.DbContext {
+    public partial class MlContext : DbContext {
         public MlContext() { }
 
         public MlContext(DbContextOptions<MlContext> options)
@@ -24,6 +23,7 @@ namespace DAL {
             modelBuilder.Entity<Submission>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<Vote>().Property(e => e.Time).HasDefaultValueSql("now()");
             modelBuilder.Entity<User>().Property(e => e.Joined).HasDefaultValueSql("now()");
+            modelBuilder.Entity<Submission>().Property(e => e.IsWatched).HasDefaultValue(false);
 
             // Seed accounts
             modelBuilder.Entity<User>().HasData(
@@ -43,6 +43,7 @@ namespace DAL {
             // https://github.com/aspnet/EntityFrameworkCore/issues/14051
             modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int32>());
             modelBuilder.Entity<User>().Property(e => e.IsAdmin).HasConversion(new BoolToZeroOneConverter<Int32>());
+            modelBuilder.Entity<Submission>().Property(e => e.IsWatched).HasConversion(new BoolToZeroOneConverter<Int32>());
         }
     }
 }

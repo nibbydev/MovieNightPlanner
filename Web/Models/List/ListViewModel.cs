@@ -8,26 +8,34 @@ using Microsoft.EntityFrameworkCore;
 namespace MovieNight.Models.List {
     public class ListViewModel {
         public List<Submission> Submissions { get; set; }
+        public List<Submission> WatchedSubmissions { get; set; }
         public int Id { get; set; }
         public bool Vote { get; set; }
 
         public ListViewModel() { }
 
         public void GetSubmissions(MlContext ctx, string username) {
-            Submissions = ctx.Submissions
+            // Get all movies
+            var submissions = ctx.Submissions
                 .Include(t => t.User)
                 .Include(t => t.Votes)
                 .ThenInclude(t => t.User)
                 .ToList();
+            
+            // Split into two
+            Submissions = submissions.Where(t => !t.IsWatched).ToList();
+            WatchedSubmissions = submissions.Where(t => t.IsWatched).ToList();
 
             // Count votes
             Submissions.ForEach(t => t.UpVotes = t.Votes.Count(u => u.Value));
             Submissions.ForEach(t => t.DownVotes = t.Votes.Count(u => !u.Value));
-            
+
             // Find submissions the user has voted for
             if (username != null) {
-                Submissions.ForEach(t => t.UserHasVotedFor = t.Votes.Any(u => u.Value && u.User.Username.Equals(username)));
-                Submissions.ForEach(t => t.UserHasVotedAgainst = t.Votes.Any(u => !u.Value && u.User.Username.Equals(username)));
+                Submissions.ForEach(t =>
+                    t.UserHasVotedFor = t.Votes.Any(u => u.Value && u.User.Username.Equals(username)));
+                Submissions.ForEach(t =>
+                    t.UserHasVotedAgainst = t.Votes.Any(u => !u.Value && u.User.Username.Equals(username)));
             }
 
             // Sort by total sum of votes
