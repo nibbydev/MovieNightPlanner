@@ -28,11 +28,11 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Index">List</a>
                     </li>
                     @if (HttpContextAccessor.HttpContext.Session.GetString("username") == null) {
-                        <li class="nav-item ml-auto">
+                        <li class="nav-item ml-sm-auto">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Log in</a>
                         </li>
                     } else {
-                        <li class="nav-item mr-auto">
+                        <li class="nav-item mr-sm-auto">
                             <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="New">Add new</a>
                         </li>
                         if (HttpContextAccessor.HttpContext.Session.GetInt32("is_admin") == 1) {
