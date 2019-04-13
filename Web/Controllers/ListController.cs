@@ -30,22 +30,20 @@ namespace MovieNight.Controllers {
         [HttpPost]
         public IActionResult Add(ListNewViewModel model) {
             if (!IsAuthenticated()) {
-                return BadRequest();
+                return BadRequest("Not authenticated");
             }
             
             // Check if input is ok
             if (!model.Verify(out var msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest(msg);
             }
             
             // Add to database
             if (!model.AddToDb(_ctx, HttpContext.Session.GetString("username"), out msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest(msg);
             }
 
-            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
+            return Ok(msg);
         }
         
         [HttpGet]

@@ -26,13 +26,14 @@ function submit() {
     request.done(function(response) {
         span.removeClass();
         span.addClass("text-success");
-        span.html("Successfully added");
+        span.html(response.responseText);
     });
 
     request.fail(function(response) {
+        console.log(response);
         span.removeClass();
         span.addClass("text-danger");
-        span.html("Error: " + response.responseText);
+        span.html(response.responseText);
         btn.prop("disabled", false);
     });
 }
