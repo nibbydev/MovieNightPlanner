@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using DAL;
 using DAL.Domain;
 
 namespace MovieNight.Models.Admin {
     public class AdminUsersViewModel {
+        private static readonly Regex UsernamePattern = new Regex("^[a-zA-Z0-9_]+$");
+        
         public List<User> Users { get; set; }
         public string Username { get; set; }
         public string Action { get; set; }
@@ -34,6 +37,10 @@ namespace MovieNight.Models.Admin {
         }
         
         private bool CreateUser(MlContext ctx, out string msg) {
+            if (!VerifyInput(out msg)) {
+                return false;
+            }
+            
             var user = ctx.Users.FirstOrDefault(t => t.Username.Equals(Username));
             if (user != null) {
                 msg = "User already exists";
@@ -55,6 +62,31 @@ namespace MovieNight.Models.Admin {
             msg = "User created";
             return true;
         }
+
+        private bool VerifyInput(out string msg) {
+            if (string.IsNullOrEmpty(Username)) {
+                msg = "No username provided";
+                return false;
+            }
+
+            if (Username.Length < 3) {
+                msg = "Username must be at least 3 characters";
+                return false;
+            }
+            
+            if (Username.Length > 32) {
+                msg = "Username must not be more than 32 characters";
+                return false;
+            }
+            
+            if (!UsernamePattern.IsMatch(Username)) {
+                msg = "Username contains illegal symbols";
+                return false;
+            }
+
+            msg = "Input verified successfully";
+            return true;
+        }
         
         private bool DeleteUser(MlContext ctx, out string msg) {
             var user = ctx.Users.FirstOrDefault(t => t.Id.Equals(Id));
@@ -64,7 +96,7 @@ namespace MovieNight.Models.Admin {
             }
             
             if (user.IsAdmin) {
-                msg = "Cannot delete an admin";
+                msg = "Cannot delete an administrative user";
                 return false;
             }
 

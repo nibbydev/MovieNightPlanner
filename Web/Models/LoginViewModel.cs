@@ -6,7 +6,7 @@ using DAL.Domain;
 
 namespace MovieNight.Models {
     public class LoginViewModel {
-        private static readonly Regex UsernameNameRegex = new Regex(@"^[a-zA-Z_]+$");
+        private static readonly Regex UsernameNameRegex = new Regex(@"^[a-zA-Z0-9_]+$");
         
         public string Username { get; set; }
         public string Password { get; set; }

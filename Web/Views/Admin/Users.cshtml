@@ -38,7 +38,7 @@
                         <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
                             <input type="hidden" asp-for="Id" value="@user.Id"/>
                             <input type="hidden" asp-for="Action" value="reset"/>
-                            @if (user.Secret == null) {
+                            @if (user.Secret == null || user.IsAdmin) {
                                 <button disabled type="submit" class="btn btn-sm btn-danger">Reset password</button>
                             } else {
                                 <button type="submit" class="btn btn-sm btn-danger">Reset password</button>
