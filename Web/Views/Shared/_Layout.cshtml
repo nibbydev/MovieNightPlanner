@@ -8,6 +8,7 @@
     <meta property="og:locale" content="en_US">
     <meta property="og:title" content="Movie Night Planner">
     <meta property="og:type" content="website">
+    <meta property="og:image" content="https://movieplanner.live/logo_96.png">
     <meta property="og:description" content="For recommending and voting on movies">
     <title>@ViewBag.Title - Movie Night</title>
 
@@ -21,7 +22,10 @@
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MovieNight</a>
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                <img src="~/logo_96.png" width="25" height="25" class="d-inline-block align-top" alt="">
+                MovieNight
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
