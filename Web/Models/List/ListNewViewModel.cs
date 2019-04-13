@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using DAL;
 using DAL.Domain;
+using Utility;
 
 namespace MovieNight.Models.List {
     public class ListNewViewModel {
@@ -28,7 +29,13 @@ namespace MovieNight.Models.List {
 
         public bool AddToDb(MlContext ctx, string username, out string msg) {
             // Extract id from user-provided url
-            var id = int.Parse(UrlRegex.Match(Url).Groups[2].Value);
+            int id;
+            try {
+                id = int.Parse(UrlRegex.Match(Url).Groups[2].Value);
+            } catch {
+                msg = "Invalid URL";
+                return false;
+            }
 
             // Check if the submission already exists. Prevents api spam
             // I'd use .Any() but it's throwing a lot of `InvalidOperationException: No coercion operator is defined
@@ -39,11 +46,18 @@ namespace MovieNight.Models.List {
                 return false;
             }
 
+            // Attempt to get movie details from external API
+            Entry entry;
+            try {
+                entry = ApiConnector.AsyncGet(id).Result;
+                if (entry == null) throw new Exception();
+            } catch {
+                msg = "Could not query external API with provided url";
+                return false;
+            }
+            
             // Attempt to add to database
             try {
-                // Get movie details from external API
-                var entry = Utility.ApiConnector.AsyncGet(id).Result;
-                
                 ctx.Submissions.Add(new Submission {
                     Id = entry.MalId,
                     UserId = ctx.Users.First(t => t.Username.Equals(username)).Id,
@@ -63,6 +77,7 @@ namespace MovieNight.Models.List {
                 ctx.SaveChanges();
             } catch (Exception ex) {
                 msg = ex.Message;
+                msg = "An exception occurred while processing the request";
                 return false;
             }
 
