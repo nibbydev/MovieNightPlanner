@@ -16,7 +16,7 @@ function submit() {
     
     const request = $.ajax({
         // should be replaced with a bit more dynamic solution
-        url: "https://localhost:5001/List/Add",
+        url: "https://movieplanner.live/List/Add",
         data: data,
         type: "POST",
         async: true,
@@ -30,7 +30,6 @@ function submit() {
     });
 
     request.fail(function(response) {
-        console.log(response);
         span.removeClass();
         span.addClass("text-danger");
         span.html(response.responseText);

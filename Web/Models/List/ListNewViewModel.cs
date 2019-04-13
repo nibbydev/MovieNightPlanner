@@ -39,11 +39,11 @@ namespace MovieNight.Models.List {
                 return false;
             }
 
-            // Get movie details from external API
-            var entry = Utility.ApiConnector.AsyncGet(id).Result;
-
             // Attempt to add to database
             try {
+                // Get movie details from external API
+                var entry = Utility.ApiConnector.AsyncGet(id).Result;
+                
                 ctx.Submissions.Add(new Submission {
                     Id = entry.MalId,
                     UserId = ctx.Users.First(t => t.Username.Equals(username)).Id,
