@@ -26,23 +26,19 @@
                         <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
                             <input type="hidden" asp-for="Id" value="@user.Id"/>
                             <input type="hidden" asp-for="Action" value="delete"/>
-                            @if (user.IsAdmin) {
-                                <button disabled type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            } else {
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            }
-                           
+                            <button type="submit" class="btn btn-sm btn-danger" asp-disable="@user.IsAdmin">
+                                Delete
+                            </button>
                         </form>
                     </td>
                     <td>
                         <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
                             <input type="hidden" asp-for="Id" value="@user.Id"/>
                             <input type="hidden" asp-for="Action" value="reset"/>
-                            @if (user.Secret == null || user.IsAdmin) {
-                                <button disabled type="submit" class="btn btn-sm btn-danger">Reset password</button>
-                            } else {
-                                <button type="submit" class="btn btn-sm btn-danger">Reset password</button>
-                            }
+                            
+                            <button type="submit" class="btn btn-sm btn-danger" asp-disable="@(user.Secret == null || user.IsAdmin)">
+                                Reset password
+                            </button>
                         </form>
                     </td>
                 </tr>
@@ -55,7 +51,7 @@
                     <td>
                         <input asp-for="Username" placeholder="Username" class="form-control form-control-sm"/>
                     </td>
-                    <td>@false</td>
+                    <td>False</td>
                     <td colspan="2">
                         <button type="submit" class="btn btn-sm btn-success">Create new</button>
                     </td>

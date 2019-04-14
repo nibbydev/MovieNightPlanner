@@ -53,8 +53,6 @@ namespace MovieNight.Controllers {
         }
 
         public bool IsAuthenticated() {
-            // I guess normally people would use User.Identity.IsAuthenticated but I
-            // didn't really have time to read about and set up the authentication service
             return HttpContext.Session.GetString("username") != null;
         }
     }
