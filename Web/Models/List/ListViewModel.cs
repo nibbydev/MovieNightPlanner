@@ -45,6 +45,7 @@ namespace MovieNight.Models.List {
         public void GetWatchedSubmissions(MlContext ctx) {
             WatchedSubmissions = ctx.Submissions
                 .Where(t => t.IsWatched)
+                .Include(t => t.User)
                 .ToList();
         }
 
