@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model MovieNight.Models.List.ListViewModel
+
+@{
+    ViewBag.Title = "Watched List";
+    ViewBag.JumbotronTitle = "Watched";
+    ViewBag.JumbotronSubTitle = "Movies from previous weekends";
+}
+
+<div class="row">
+    @foreach (var item in Model.WatchedSubmissions) {
+        <div class="col-lg-4 col-md-6 col-12">
+            <div class="card mb-3">
+                <a href="@Html.DisplayFor(modelItem => item.Url)" target="_blank">
+                    <img alt="..." src="@Html.DisplayFor(modelItem => item.ImageUrl)" class="card-img-top"/>
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">
+                        @Html.DisplayFor(t => item.Title)
+                    </h5>
+                    <hr/>
+
+                    <table class="table table-borderless table-xs mb-0">
+                        <tbody>
+                        <tr>
+                            <td>Score</td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Score)</small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Duration</td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Duration)</small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Rating</td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Rating)</small>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Genres</td>
+                            <td>
+                                <small>@Html.DisplayFor(t => item.Genres)</small>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                    <small class="text-muted">Suggested by @Html.DisplayFor(t => item.User.Username)</small>
+                </div>
+            </div>
+        </div>
+    }
+</div>

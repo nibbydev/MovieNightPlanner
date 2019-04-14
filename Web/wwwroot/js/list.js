@@ -13,7 +13,7 @@ function submit() {
     span.empty();
     span.addClass("buffering");
     btn.prop("disabled", true);
-    
+
     const request = $.ajax({
         // should be replaced with a bit more dynamic solution
         url: "https://movieplanner.live/List/Add",
@@ -23,13 +23,13 @@ function submit() {
         dataTypes: "json"
     });
 
-    request.done(function(response) {
+    request.done(function (response) {
         span.removeClass();
         span.addClass("text-success");
-        span.html(response.responseText);
+        span.html(response);
     });
 
-    request.fail(function(response) {
+    request.fail(function (response) {
         span.removeClass();
         span.addClass("text-danger");
         span.html(response.responseText);
@@ -39,7 +39,7 @@ function submit() {
 
 function getAndVerifyInputs() {
     const urlPattern = /^(https?:\/\/)?m\w{9}t\.net\/\w{5}\/\d+\/.+$/;
-    
+
     return {
         Url: getAndVerify("#modal-url", urlPattern)
     };
@@ -53,7 +53,7 @@ function getAndVerify(selector, pattern) {
     form.addClass("form-control");
 
     if (pattern.test(input)) {
-        form.addClass( "is-valid" );
+        form.addClass("is-valid");
         return input;
     } else {
         form.addClass("is-invalid");

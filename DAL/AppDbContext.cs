@@ -1,5 +1,4 @@
-﻿using System;
-using DAL.Domain;
+﻿using DAL.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
@@ -35,9 +34,9 @@ namespace DAL {
                 });
 
             // https://github.com/aspnet/EntityFrameworkCore/issues/14051
-            modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<Int32>());
-            modelBuilder.Entity<User>().Property(e => e.IsAdmin).HasConversion(new BoolToZeroOneConverter<Int32>());
-            modelBuilder.Entity<Submission>().Property(e => e.IsWatched).HasConversion(new BoolToZeroOneConverter<Int32>());
+            modelBuilder.Entity<Vote>().Property(e => e.Value).HasConversion(new BoolToZeroOneConverter<int>());
+            modelBuilder.Entity<User>().Property(e => e.IsAdmin).HasConversion(new BoolToZeroOneConverter<int>());
+            modelBuilder.Entity<Submission>().Property(e => e.IsWatched).HasConversion(new BoolToZeroOneConverter<int>());
         }
     }
 }

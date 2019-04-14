@@ -14,8 +14,8 @@
 
     <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" 
-          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" 
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
           crossorigin="anonymous">
 </head>
 <body>
@@ -33,7 +33,10 @@
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                 <ul class="navbar-nav flex-grow-1">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Index">List</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Planned">Planned</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Watched">Watched</a>
                     </li>
                     @if (HttpContextAccessor.HttpContext.Session.GetString("username") == null) {
                         <li class="nav-item ml-sm-auto">
@@ -62,7 +65,7 @@
 <div class="container">
     <main role="main" class="pb-3">
         @if (ViewBag.JumbotronTitle != null) {
-            <div class="jumbotron">
+            <div class="jumbotron p-3">
                 <div class="container">
                     <h1 class="display-4">@ViewBag.JumbotronTitle</h1>
                     @if (ViewBag.JumbotronSubTitle != null) {
@@ -93,12 +96,12 @@
             crossorigin="anonymous"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=">
     </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous">
-        
+
     </script>
 </environment>
 <script src="~/js/site.js" asp-append-version="true"></script>

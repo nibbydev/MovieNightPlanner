@@ -7,24 +7,30 @@ using MovieNight.Models.List;
 namespace MovieNight.Controllers {
     public class ListController : Controller {
         private readonly MlContext _ctx = new MlContext();
-        
-        [HttpGet]
-        public IActionResult Index() {
-            var model = new ListViewModel();
-            model.GetSubmissions(_ctx, GetUsername());
 
+        [HttpGet]
+        public IActionResult Watched() {
+            var model = new ListViewModel();
+            model.GetWatchedSubmissions(_ctx, GetUsername());
             return View(model);
         }
-        
+
+        [HttpGet]
+        public IActionResult Planned() {
+            var model = new ListViewModel();
+            model.GetPlannedSubmissions(_ctx, GetUsername());
+            return View(model);
+        }
+
         [HttpPost]
         public IActionResult Vote(ListViewModel model) {
             if (!IsAuthenticated()) {
                 var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
                 return RedirectToAction("Status", "Home", statusModel);
             }
-            
+
             model.AddVoteToDb(_ctx, GetUsername());
-            return RedirectToAction("Index");
+            return RedirectToAction("Planned");
         }
 
         [HttpPost]
@@ -32,12 +38,12 @@ namespace MovieNight.Controllers {
             if (!IsAuthenticated()) {
                 return BadRequest("Not authenticated");
             }
-            
+
             // Check if input is ok
             if (!model.Verify(out var msg)) {
                 return BadRequest(msg);
             }
-            
+
             // Add to database
             if (!model.AddToDb(_ctx, HttpContext.Session.GetString("username"), out msg)) {
                 return BadRequest(msg);
@@ -45,20 +51,18 @@ namespace MovieNight.Controllers {
 
             return Ok(msg);
         }
-        
+
         [HttpGet]
         public IActionResult New() {
             if (!IsAuthenticated()) {
                 var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
                 return RedirectToAction("Status", "Home", statusModel);
             }
-            
+
             return View();
         }
-        
+
         public bool IsAuthenticated() {
-            // I guess normally people would use User.Identity.IsAuthenticated but I
-            // didn't really have time to read about and set up the authentication service
             return GetUsername() != null;
         }
 
