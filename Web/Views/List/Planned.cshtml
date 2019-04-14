@@ -87,11 +87,13 @@
     @foreach (var item in Model.PlannedSubmissions) {
         <div class="col-lg-4 col-md-6 col-12">
             <div class="card mb-3">
-                <a href="@item.Url" target="_blank">
+                <a class="d-none d-md-block" href="@item.Url" target="_blank">
                     <img alt="..." src="@item.ImageUrl" class="card-img-top"/>
                 </a>
                 <div class="card-body">
-                    <h5 class="card-title">@item.Title</h5>
+                    <a href="@item.Url" target="_blank">
+                        <h5 class="card-title">@item.Title</h5>
+                    </a>
                     <hr/>
 
                     <table class="table table-borderless table-xs mb-0">
@@ -129,7 +131,7 @@
                 
                 <div class="row no-gutters">
                     <div class="col">
-                        <button type="button" class="btn btn-block btn-light" action="upvote" id="@item.Id"
+                        <button type="button" class="btn btn-block btn-light text-nowrap" action="upvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasVotedFor">
                             <i class="fa fa-arrow-up mr-2"></i>
@@ -138,7 +140,7 @@
                     </div>
                     
                     <div class="col">
-                        <button type="button" class="btn btn-block btn-light" action="seen" id="@item.Id"
+                        <button type="button" class="btn btn-block btn-light text-nowrap" action="seen" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasSeen">
                             <i class="fa fa-eye mr-2"></i>
@@ -147,7 +149,7 @@
                     </div>
                     
                     <div class="col">
-                        <button type="button" class="btn btn-block btn-light" action="downvote" id="@item.Id"
+                        <button type="button" class="btn btn-block btn-light text-nowrap" action="downvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasVotedAgainst">
                             <i class="fa fa-arrow-down mr-2"></i>
