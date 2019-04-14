@@ -38,6 +38,7 @@
             request.done(function (response) {
                 span.removeClass();
                 span.addClass("text-success");
+                btn.prop("disabled", false);
                 span.html(response);
             });
 
