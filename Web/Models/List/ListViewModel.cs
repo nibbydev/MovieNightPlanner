@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using DAL;
@@ -10,7 +9,7 @@ namespace MovieNight.Models.List {
         public List<Submission> PlannedSubmissions { get; set; }
         public List<Submission> WatchedSubmissions { get; set; }
         public int Id { get; set; }
-        public bool Vote { get; set; }
+        public string Action { get; set; }
 
         public ListViewModel() { }
 
@@ -24,68 +23,96 @@ namespace MovieNight.Models.List {
                 .ToList();
 
             // Count votes
-            PlannedSubmissions.ForEach(t => t.UpVotes = t.Votes.Count(u => u.Value));
-            PlannedSubmissions.ForEach(t => t.DownVotes = t.Votes.Count(u => !u.Value));
+            PlannedSubmissions.ForEach(t => t.UpVotes = t.Votes.Count(u => u.Value == 1));
+            PlannedSubmissions.ForEach(t => t.DownVotes = t.Votes.Count(u => u.Value == -1));
+            PlannedSubmissions.ForEach(t => t.Seen = t.Votes.Count(u => u.Value == 0));
 
             // Find submissions the current user has voted for
             if (username != null) {
                 PlannedSubmissions.ForEach(t =>
-                    t.UserHasVotedFor = t.Votes.Any(u => u.Value && u.User.Username.Equals(username)));
+                    t.UserHasVotedFor = t.Votes.Any(u => u.Value == 1 && u.User.Username.Equals(username)));
                 PlannedSubmissions.ForEach(t =>
-                    t.UserHasVotedAgainst = t.Votes.Any(u => !u.Value && u.User.Username.Equals(username)));
+                    t.UserHasVotedAgainst = t.Votes.Any(u => u.Value == -1 && u.User.Username.Equals(username)));
+                PlannedSubmissions.ForEach(t =>
+                    t.UserHasSeen = t.Votes.Any(u => u.Value == 0 && u.User.Username.Equals(username)));
             }
 
             // Sort by total sum of votes
-            PlannedSubmissions.Sort((j, i) => (i.UpVotes - i.DownVotes).CompareTo(j.UpVotes - j.DownVotes));
+            PlannedSubmissions.Sort((j, i) => (i.UpVotes - i.DownVotes - i.Seen)
+                .CompareTo(j.UpVotes - j.DownVotes - j.Seen));
         }
 
-        public void GetWatchedSubmissions(MlContext ctx, string username) {
+        public void GetWatchedSubmissions(MlContext ctx) {
             WatchedSubmissions = ctx.Submissions
                 .Where(t => t.IsWatched)
                 .ToList();
         }
 
-        public bool AddVoteToDb(MlContext ctx, string username) {
+        public bool DoAction(MlContext ctx, string username, out string msg) {
+            switch (Action) {
+                case "upvote":
+                    return VoteSubmission(ctx, username, 1, out msg);
+                case "downvote":
+                    return VoteSubmission(ctx, username, -1, out msg);
+                case "seen":
+                    return VoteSubmission(ctx, username, 0, out msg);
+                default:
+                    msg = "Invalid action";
+                    return false;
+            }
+        }
+
+        private bool VoteSubmission(MlContext ctx, string username, int value, out string msg) {
             var userId = ctx.Users.First(t => t.Username.Equals(username)).Id;
             var vote = ctx.Votes.FirstOrDefault(t => t.UserId == userId && t.SubmissionId == Id);
 
-            if (vote != null) {
-                // Remove vote
-                if (vote.Value == Vote) {
-                    try {
-                        ctx.Votes.Remove(vote);
-                        ctx.SaveChanges();
-                        return true;
-                    } catch (Exception) {
-                        return false;
-                    }
-                }
+            // Vote didn't exist
+            if (vote == null) {
+                vote = new Vote {
+                    SubmissionId = Id,
+                    Value = value,
+                    UserId = userId
+                };
 
-                // Attempt to update vote
+                // Attempt to add to database
                 try {
-                    vote.Value = Vote;
-                    ctx.Votes.Update(vote);
+                    ctx.Votes.Add(vote);
                     ctx.SaveChanges();
+                } catch {
+                    msg = "An error occurred while adding the vote";
+                    return false;
+                }
+                
+                msg = "Successfully added vote";
+                return true;
+            }
+            
+                    
+            // Remove vote from database
+            if (vote.Value == value) {
+                try {
+                    ctx.Votes.Remove(vote);
+                    ctx.SaveChanges();
+                    msg = "Successfully removed the vote";
                     return true;
-                } catch (Exception) {
+                } catch {
+                    msg = "An error occurred while adding the vote";
                     return false;
                 }
             }
 
-            vote = new Vote {
-                SubmissionId = Id,
-                Value = Vote,
-                UserId = ctx.Users.First(t => t.Username.Equals(username)).Id
-            };
-
-            // Attempt to add to database
+            // Attempt to update vote
             try {
-                ctx.Votes.Add(vote);
+                vote.Value = value;
+                ctx.Votes.Update(vote);
                 ctx.SaveChanges();
-                return true;
-            } catch (Exception) {
+            } catch {
+                msg = "An error occurred while adding the vote";
                 return false;
             }
+            
+            msg = "Successfully updated the vote";
+            return true;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MovieNight.Controllers {
         [HttpGet]
         public IActionResult Watched() {
             var model = new ListViewModel();
-            model.GetWatchedSubmissions(_ctx, GetUsername());
+            model.GetWatchedSubmissions(_ctx);
             return View(model);
         }
 
@@ -23,14 +23,16 @@ namespace MovieNight.Controllers {
         }
 
         [HttpPost]
-        public IActionResult Vote(ListViewModel model) {
+        public IActionResult Action(ListViewModel model) {
             if (!IsAuthenticated()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest("Not authenticated");
+            }
+            
+            if (!model.DoAction(_ctx, GetUsername(), out var msg)) {
+                return BadRequest(msg);
             }
 
-            model.AddVoteToDb(_ctx, GetUsername());
-            return RedirectToAction("Planned");
+            return Ok(msg);
         }
 
         [HttpPost]
@@ -45,7 +47,7 @@ namespace MovieNight.Controllers {
             }
 
             // Add to database
-            if (!model.AddToDb(_ctx, HttpContext.Session.GetString("username"), out msg)) {
+            if (!model.AddToDb(_ctx, GetUsername(), out msg)) {
                 return BadRequest(msg);
             }
 

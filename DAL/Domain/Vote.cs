@@ -16,6 +16,6 @@ namespace DAL.Domain {
         public User User { get; set; }
         public int UserId { get; set; }
 
-        public bool Value { get; set; }
+        public int Value { get; set; }
     }
 }

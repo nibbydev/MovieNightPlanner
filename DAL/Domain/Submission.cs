@@ -30,7 +30,9 @@ namespace DAL.Domain {
 
         [NotMapped] public int UpVotes { get; set; }
         [NotMapped] public int DownVotes { get; set; }
+        [NotMapped] public int Seen { get; set; }
         [NotMapped] public bool UserHasVotedFor { get; set; }
         [NotMapped] public bool UserHasVotedAgainst { get; set; }
+        [NotMapped] public bool UserHasSeen { get; set; }
     }
 }

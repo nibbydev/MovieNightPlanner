@@ -1,11 +1,86 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment
 @model MovieNight.Models.List.ListViewModel
 
 @{
     ViewBag.Title = "Planned List";
     ViewBag.JumbotronTitle = "Planned";
     ViewBag.JumbotronSubTitle = "Suggestions for the next movie night";
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
+            @Html.Raw("const URL = 'https://localhost:5001/List/Action';")
+        } else {
+            @Html.Raw("const URL = 'https://movieplanner.live/List/Action';")
+        }
+    
+        $("button").click(submit);
+
+        function submit() {
+            const btn = $(this);
+            const action = btn.attr("action");
+            const id = btn.attr("id");
+
+            updateBtnState(action, id);
+
+            // Get data from button
+            const payload = {
+                action: action,
+                id: id
+            };
+
+            const request = $.ajax({
+                url: URL,
+                data: payload,
+                type: "POST",
+                async: true,
+                dataTypes: "json"
+            });
+
+            request.done(function (response) {
+                console.log(response);
+            });
+
+            request.fail(function (response) {
+                console.log(response);
+            });
+        }
+
+        function updateBtnState(action, id) {
+            // Find all buttons with the provided id
+            const buttons = $(`button[id=${id}]`);
+
+            // Loop though each button
+            for (let i = 0; i < buttons.length; i++) {
+                const button = $(buttons[i]);
+                const tmpAction = button.attr("action");
+
+                // Button was active before, decrement counter
+                const wasActive = button.hasClass("active");
+                if (wasActive) {
+                    changeButtonCounter(button, -1);
+                    button.removeClass("active");
+                } else if (tmpAction === action) {
+                    changeButtonCounter(button, 1);
+                    button.addClass("active");
+                }
+            }
+        }
+        
+        function changeButtonCounter(button, value) {
+            const span = $("span", button);
+
+            value += parseInt(span.html());
+            span.html(value);
+            
+            if (value <= 0) {
+                span.addClass("d-none");
+            } else span.removeClass("d-none");
+        }
+    </script>
 }
 
 <div class="row">
@@ -51,36 +126,33 @@
                     <small class="text-muted">Suggested by @item.User.Username</small>
                 </div>
 
+                
                 <div class="row no-gutters">
                     <div class="col">
-                        <form asp-controller="List" asp-action="Vote">
-                            <input asp-for="Id" type="hidden" value="@item.Id"/>
-                            <input asp-for="Vote" type="hidden" value="True"/>
-
-                            <button type="submit" class="btn btn-block" asp-if-class-btn-success="item.UserHasVotedFor"
-                                    asp-if-class-btn-light="!item.UserHasVotedFor"
-                                    asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)">
-                                <i class="fa fa-thumbs-up mr-2"></i>
-                                @if (item.UpVotes > 0) {
-                                    <span class="badge">@item.UpVotes</span>
-                                }
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light" action="upvote" id="@item.Id"
+                                asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
+                                asp-if-class-active="@item.UserHasVotedFor">
+                            <i class="fa fa-arrow-up mr-2"></i>
+                            <span class="badge" asp-if-class-d-none="@(item.UpVotes == 0)">@item.UpVotes</span>
+                        </button>
                     </div>
+                    
                     <div class="col">
-                        <form asp-controller="List" asp-action="Vote">
-                            <input asp-for="Id" type="hidden" value="@item.Id"/>
-                            <input asp-for="Vote" type="hidden" value="@false"/>
-
-                            <button type="submit" class="btn btn-block" asp-if-class-btn-danger="item.UserHasVotedAgainst"
-                                    asp-if-class-btn-light="!item.UserHasVotedAgainst"
-                                    asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)">
-                                <i class="fa fa-thumbs-down mr-2"></i>
-                                @if (item.DownVotes > 0) {
-                                    <span class="badge">@item.DownVotes</span>
-                                }
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light" action="seen" id="@item.Id"
+                                asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
+                                asp-if-class-active="@item.UserHasSeen">
+                            <i class="fa fa-eye mr-2"></i>
+                            <span class="badge" asp-if-class-d-none="@(item.Seen == 0)">@item.Seen</span>
+                        </button>
+                    </div>
+                    
+                    <div class="col">
+                        <button type="button" class="btn btn-block btn-light" action="downvote" id="@item.Id"
+                                asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
+                                asp-if-class-active="@item.UserHasVotedAgainst">
+                            <i class="fa fa-arrow-down mr-2"></i>
+                            <span class="badge" asp-if-class-d-none="@(item.DownVotes == 0)">@item.DownVotes</span>
+                        </button>
                     </div>
                 </div>
             </div>
