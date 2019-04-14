@@ -47,31 +47,27 @@ namespace MovieNight.Controllers {
         [HttpPost]
         public IActionResult Submissions(AdminSubmissionsViewModel model) {
             if (!IsAdmin()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest("Not authenticated");
             }
 
             if (!model.DoAction(_ctx, out var msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest(msg);
             }
 
-            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
+            return Ok(msg);
         }
         
         [HttpPost]
         public IActionResult Users(AdminUsersViewModel model) {
             if (!IsAdmin()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest("Not authenticated");
             }
 
             if (!model.DoAction(_ctx, out var msg)) {
-                var statusModel = new StatusViewModel {IsError = true, Message = msg};
-                return RedirectToAction("Status", "Home", statusModel);
+                return BadRequest(msg);
             }
 
-            return RedirectToAction("Status", "Home", new StatusViewModel {Message = msg});
+            return Ok(msg);
         }
 
         public bool IsAuthenticated() {

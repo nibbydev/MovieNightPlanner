@@ -22,7 +22,7 @@ namespace Utility {
         public string Type { get; set; }
         
         [JsonProperty(PropertyName = "episodes")]
-        public int Episodes { get; set; }
+        public int? Episodes { get; set; }
         
         [JsonProperty(PropertyName = "status")]
         public string Status { get; set; }
@@ -31,7 +31,7 @@ namespace Utility {
         public string Rating { get; set; }
         
         [JsonProperty(PropertyName = "score")]
-        public double Score { get; set; }
+        public double? Score { get; set; }
         
         [JsonProperty(PropertyName = "duration")]
         public string Duration { get; set; }

@@ -1,13 +1,92 @@
 ﻿@model MovieNight.Models.Admin.AdminUsersViewModel
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment
 @{
     ViewBag.Title = "User Management";
     ViewBag.JumbotronTitle = "Admin panel";
     ViewBag.JumbotronSubTitle = "User Management";
 }
 
+@section Scripts {
+    <script type="text/javascript">
+        @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
+            @Html.Raw("const URL = 'https://localhost:5001/Admin/Users';")
+        } else {
+            @Html.Raw("const URL = 'https://movieplanner.live/Admin/Users';")
+        }
+    
+        $("button").click(submit);
+        $("input").on("input", getAndVerifyInputs);
+
+        function submit() {
+            const btn = $(this);
+            const action = btn.attr("action");
+            const id = btn.attr("id");
+
+            // Get data from button
+            const payload = {
+                action: action,
+                id: id
+            };
+            
+            if (action === "create") {
+                payload.username = getAndVerifyInputs().username;
+                if (!payload.username) return;
+            }
+            
+            updateDom(btn, action);
+
+            const request = $.ajax({
+                url: URL,
+                data: payload,
+                type: "POST",
+                async: true,
+                dataTypes: "json"
+            });
+
+            request.done(function(response) {
+                console.log(response);
+            });
+
+            request.fail(function(response) {
+                console.log(response);
+            });
+        }
+
+        function updateDom(btn, action) {
+            if (action === "delete") {
+                btn.closest("tr").remove();
+            } else if (action === "reset") {
+                btn.attr("disabled", true);
+            }
+        }
+        
+        function getAndVerifyInputs() {
+            return {
+                username: getAndVerify("input", /^[a-zA-Z0-9_]{3,32}$/)
+            };
+        }
+
+        function getAndVerify(selector, pattern) {
+            const form = $(selector);
+            const input = form.val().trim();
+
+            form.removeClass("is-valid");
+            form.removeClass("is-invalid");
+
+            if (pattern.test(input)) {
+                form.addClass("is-valid");
+                return input;
+            } else {
+                form.addClass("is-invalid");
+                return null;
+            }
+        }
+    </script>
+}
+
 <div class="row">
     <div class="col">
-        <table class="table table-responsive-md table-bordered table-sm">
+        <table class="table table-responsive-lg table-bordered table-sm">
             <thead>
             <tr>
                 <th scope="col">Id</th>
@@ -17,45 +96,37 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var user in Model.Users) {
+            @foreach (var item in Model.Users) {
                 <tr>
-                    <th scope="row">@user.Id</th>
-                    <td>@user.Username</td>
-                    <td>@user.IsAdmin</td>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Username</td>
+                    <td>@item.IsAdmin</td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
-                            <input type="hidden" asp-for="Id" value="@user.Id"/>
-                            <input type="hidden" asp-for="Action" value="delete"/>
-                            <button type="submit" class="btn btn-sm btn-danger" asp-disable="@user.IsAdmin">
-                                Delete
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap"
+                                action="delete" id="@item.Id" asp-disable="@item.IsAdmin">
+                            <span>Delete</span>
+                        </button>
                     </td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Users" method="post" class="mr-1">
-                            <input type="hidden" asp-for="Id" value="@user.Id"/>
-                            <input type="hidden" asp-for="Action" value="reset"/>
-                            
-                            <button type="submit" class="btn btn-sm btn-danger" asp-disable="@(user.Secret == null || user.IsAdmin)">
-                                Reset password
-                            </button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap"
+                                action="reset" id="@item.Id" asp-disable="@(item.Secret == null || item.IsAdmin)">
+                            <span>Reset password</span>
+                        </button>
                     </td>
                 </tr>
             }
             <tr>
-                <form asp-antiforgery="true" asp-action="Users" method="post">
-                    <input type="hidden" asp-for="Action" value="create"/>
-                    
-                    <th scope="row">#</th>
-                    <td>
-                        <input asp-for="Username" placeholder="Username" class="form-control form-control-sm"/>
-                    </td>
-                    <td>False</td>
-                    <td colspan="2">
-                        <button type="submit" class="btn btn-sm btn-success">Create new</button>
-                    </td>
-                </form>
+                <th scope="row">#</th>
+                <td>
+                    <input class="form-control" placeholder="Username"/>
+                </td>
+                <td>False</td>
+                <td colspan="2">
+                    <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap"
+                            action="create">
+                        <span>Create new</span>
+                    </button>
+                </td>
             </tr>
             </tbody>
         </table>

@@ -1,51 +1,103 @@
 ﻿@model MovieNight.Models.Admin.AdminSubmissionsViewModel
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment
 @{
     ViewBag.Title = "Submission Management";
     ViewBag.JumbotronTitle = "Admin panel";
     ViewBag.JumbotronSubTitle = "Submission Management";
 }
 
+@section Scripts {
+    <script type="text/javascript">
+        @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
+            @Html.Raw("const URL = 'https://localhost:5001/Admin/Submissions';")
+        } else {
+            @Html.Raw("const URL = 'https://movieplanner.live/Admin/Submissions';")
+        }
+    
+        $("button").click(submit);
+
+        function submit() {
+            const btn = $(this);
+            const action = btn.attr("action");
+            const id = btn.attr("id");
+
+            updateDom(btn, action, id);
+
+            // Get data from button
+            const payload = {
+                action: action,
+                id: id
+            };
+
+            const request = $.ajax({
+                url: URL,
+                data: payload,
+                type: "POST",
+                async: true,
+                dataTypes: "json"
+            });
+
+            request.done(function (response) {
+                console.log(response);
+            });
+
+            request.fail(function (response) {
+                console.log(response);
+            });
+        }
+
+        function updateDom(btn, action, id) {
+            if (action === "delete") {
+                btn.closest("tr").remove();
+            } else if (action === "watched") {
+                const span = $("span", btn);
+                if (span.html() === "Mark watched") {
+                    span.html("Mark unwatched");
+                } else span.html("Mark watched");
+            }
+        }
+    </script>
+}
+
+
 <div class="row">
     <div class="col">
-        <table class="table table-responsive-md table-bordered table-sm">
+        <table class="table table-responsive-lg table-bordered table-sm">
             <thead>
             <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Added by</th>
-                <th scope="col" colspan="3">Action</th>
+                <th class="text-nowrap" scope="col">Id</th>
+                <th class="text-nowrap" scope="col">Title</th>
+                <th class="text-nowrap" scope="col">Added by</th>
+                <th class="text-nowrap" scope="col" colspan="3">Action</th>
             </tr>
             </thead>
             <tbody>
-            @foreach (var submission in Model.Submissions) {
+            @foreach (var item in Model.Submissions) {
                 <tr>
-                    <th scope="row">@submission.Id</th>
-                    <td>@submission.Title</td>
-                    <td>@submission.User.Username</td>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Title</td>
+                    <td>@item.User.Username</td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Submissions" method="post" class="mr-1">
-                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
-                            <input type="hidden" asp-for="Action" value="watched"/>
-                            @if (submission.IsWatched) {
-                                <button type="submit" class="btn btn-sm btn-outline-success">Mark Unwatched</button>
+                        <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap" 
+                                action="watched" id="@item.Id">
+                            @if (item.IsWatched) {
+                                <span>Mark unwatched</span>
                             } else {
-                                <button type="submit" class="btn btn-sm btn-success">Mark Watched</button>
+                                <span>Mark watched</span>
                             }
-                        </form>
+                        </button>
                     </td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Submissions" method="post" class="mr-1">
-                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
-                            <input type="hidden" asp-for="Action" value="reset"/>
-                            <button type="submit" class="btn btn-sm btn-warning">Reset votes</button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap" 
+                                action="reset" id="@item.Id">
+                            <span>Reset votes</span>
+                        </button>
                     </td>
                     <td>
-                        <form asp-antiforgery="true" asp-action="Submissions" method="post">
-                            <input type="hidden" asp-for="Id" value="@submission.Id"/>
-                            <input type="hidden" asp-for="Action" value="delete"/>
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                        <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap" 
+                                action="delete" id="@item.Id">
+                            <span>Delete</span>
+                        </button>
                     </td>
                 </tr>
             }
