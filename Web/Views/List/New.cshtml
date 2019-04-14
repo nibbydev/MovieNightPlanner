@@ -1,9 +1,78 @@
 ﻿@model MovieNight.Models.List.ListNewViewModel
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment HostingEnvironment
 @{
     ViewBag.Title = "Add new movie";
 }
 @section Scripts {
-    <script type="text/javascript" src="/js/list.js"></script>
+    <script type="text/javascript">
+        @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
+            @Html.Raw("const URL = 'https://localhost:5001/List/Add';")
+        } else {
+            @Html.Raw("const URL = 'https://movieplanner.live/List/Add';")
+        }
+    
+        $("#modal-url").on('input', getAndVerifyInputs);
+        $("#modal-submit").click(submit);
+
+        function submit() {
+            const data = getAndVerifyInputs();
+            if (!data.Url) {
+                return;
+            }
+
+            const btn = $(this);
+            const span = $("span", btn);
+
+            span.empty();
+            span.addClass("buffering");
+            btn.prop("disabled", true);
+
+            const request = $.ajax({
+                url: URL,
+                data: data,
+                type: "POST",
+                async: true,
+                dataTypes: "json"
+            });
+
+            request.done(function (response) {
+                span.removeClass();
+                span.addClass("text-success");
+                span.html(response);
+            });
+
+            request.fail(function (response) {
+                span.removeClass();
+                span.addClass("text-danger");
+                span.html(response.responseText);
+                btn.prop("disabled", false);
+            });
+        }
+
+        function getAndVerifyInputs() {
+            const urlPattern = /^(https?:\/\/)?m\w{9}t\.net\/\w{5}\/\d+\/.+$/;
+
+            return {
+                Url: getAndVerify("#modal-url", urlPattern)
+            };
+        }
+
+        function getAndVerify(selector, pattern) {
+            const form = $(selector);
+            const input = form.val().trim();
+
+            form.removeClass();
+            form.addClass("form-control");
+
+            if (pattern.test(input)) {
+                form.addClass("is-valid");
+                return input;
+            } else {
+                form.addClass("is-invalid");
+                return null;
+            }
+        }
+    </script>
 }
 
 <div class="row">
