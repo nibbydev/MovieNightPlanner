@@ -42,7 +42,7 @@ namespace MovieNight.Models.List {
             // between types 'System.Int16' and 'System.Boolean'.` exceptions so I went with the gimmicky option due to
             // time constraints
             if (ctx.Submissions.Where(t => t.Id == id).ToList().Any()) {
-                msg = "Already exists";
+                msg = "Movie already exists";
                 return false;
             }
 
@@ -52,7 +52,7 @@ namespace MovieNight.Models.List {
                 entry = ApiConnector.AsyncGet(id).Result;
                 if (entry == null) throw new Exception();
             } catch {
-                msg = "Could not query external API with provided url";
+                msg = "An error occurred while fetching the data";
                 return false;
             }
             
