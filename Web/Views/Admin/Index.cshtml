@@ -4,15 +4,4 @@
     ViewBag.JumbotronSubTitle = "Various controls for the site";
 }
 
-<div class="row">
-    <div class="col-sm-4 offset-sm-2 col-6">
-        <div class="card">
-            <a asp-action="Users" class="btn btn-block btn-light">User Management</a>
-        </div>
-    </div>
-    <div class="col-sm-4 col-6">
-        <div class="card">
-            <a asp-action="Submissions" class="btn btn-block btn-light">Submission Management</a>
-        </div>
-    </div>
-</div>
+<partial name="_NavigationPartial"/>
