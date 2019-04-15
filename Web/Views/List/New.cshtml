@@ -23,8 +23,12 @@
             const btn = $(this);
             const span = $("#modal-status");
 
+            // Clear any previous content
             span.empty();
-            span.addClass("buffering");
+            // Remove coloring
+            span.removeClass();
+            // Display buffering symbol
+            span.addClass("spinner-border");
             btn.prop("disabled", true);
 
             const request = $.ajax({
@@ -93,7 +97,9 @@
                         <input asp-for="Url" id="modal-url" class="form-control" placeholder="MAL link">
                     </div>
                 </div>
-                <div class="text-center"><span id="modal-status"></span></div>
+                <div class="text-center">
+                    <span id="modal-status"></span>
+                </div>
             </div>
             <button id="modal-submit" type="button" class="btn btn-block btn-light">Add</button>
         </div>
