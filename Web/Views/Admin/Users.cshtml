@@ -25,16 +25,18 @@
             // Get data from button
             const payload = {
                 action: action,
-                id: id
+                id: id,
+                username: getAndVerifyInputs().username
             };
-            
-            if (action === "create") {
-                payload.username = getAndVerifyInputs().username;
-                if (!payload.username) return;
-            }
-            
-            updateDom(btn, action);
 
+            updateDom(btn, action);
+            
+            // If user is creating a new user, but the name is invalid
+            if (action === "create" && !payload.username) {
+                return;
+            }
+
+            // Define request
             const request = $.ajax({
                 url: URL,
                 data: payload,
@@ -43,6 +45,9 @@
                 dataTypes: "json"
             });
 
+            // Would be nice to have some status message pop up 
+            // but currently there's too little room for that
+            
             request.done(function(response) {
                 console.log(response);
             });
@@ -54,31 +59,33 @@
 
         function updateDom(btn, action) {
             if (action === "delete") {
+                // Remove the row the user wanted deleted
                 btn.closest("tr").remove();
             } else if (action === "reset") {
+                // Disable the reset password button since it's already reset
                 btn.attr("disabled", true);
             }
         }
         
         function getAndVerifyInputs() {
             return {
-                username: getAndVerify("input", /^[a-zA-Z0-9_]{3,32}$/)
+                username: getAndVerify("#username-input", /^[a-zA-Z0-9_]{3,32}$/)
             };
-        }
+            
+            function getAndVerify(selector, pattern) {
+                const form = $(selector);
+                const input = form.val().trim();
 
-        function getAndVerify(selector, pattern) {
-            const form = $(selector);
-            const input = form.val().trim();
+                form.removeClass();
+                form.addClass("form-control");
 
-            form.removeClass("is-valid");
-            form.removeClass("is-invalid");
-
-            if (pattern.test(input)) {
-                form.addClass("is-valid");
-                return input;
-            } else {
-                form.addClass("is-invalid");
-                return null;
+                if (pattern.test(input)) {
+                    form.addClass("is-valid");
+                    return input;
+                } else {
+                    form.addClass("is-invalid");
+                    return null;
+                }
             }
         }
     </script>
@@ -118,12 +125,11 @@
             <tr>
                 <th scope="row">#</th>
                 <td>
-                    <input class="form-control" placeholder="Username"/>
+                    <input id="username-input" class="form-control" placeholder="Username"/>
                 </td>
                 <td>False</td>
                 <td colspan="2">
-                    <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap"
-                            action="create">
+                    <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap" action="create">
                         <span>Create new</span>
                     </button>
                 </td>

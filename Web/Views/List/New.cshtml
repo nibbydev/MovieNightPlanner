@@ -11,7 +11,7 @@
             @Html.Raw("const URL = 'https://movieplanner.live/List/Add';")
         }
     
-        $("#modal-url").on('input', getAndVerifyInputs);
+        $("#modal-url").on("input", getAndVerifyInputs);
         $("#modal-submit").click(submit);
 
         function submit() {
@@ -21,7 +21,7 @@
             }
 
             const btn = $(this);
-            const span = $("span", btn);
+            const span = $("#modal-status");
 
             span.empty();
             span.addClass("buffering");
@@ -51,26 +51,24 @@
         }
 
         function getAndVerifyInputs() {
-            const urlPattern = /^(https?:\/\/)?m\w{9}t\.net\/\w{5}\/\d+\/.+$/;
-
             return {
-                Url: getAndVerify("#modal-url", urlPattern)
+                Url: getAndVerify("#modal-url", /^(https?:\/\/)?m\w{9}t\.net\/\w{5}\/\d+\/.+$/)
             };
-        }
+            
+            function getAndVerify(selector, pattern) {
+                const form = $(selector);
+                const input = form.val().trim();
 
-        function getAndVerify(selector, pattern) {
-            const form = $(selector);
-            const input = form.val().trim();
+                form.removeClass();
+                form.addClass("form-control");
 
-            form.removeClass();
-            form.addClass("form-control");
-
-            if (pattern.test(input)) {
-                form.addClass("is-valid");
-                return input;
-            } else {
-                form.addClass("is-invalid");
-                return null;
+                if (pattern.test(input)) {
+                    form.addClass("is-valid");
+                    return input;
+                } else {
+                    form.addClass("is-invalid");
+                    return null;
+                }
             }
         }
     </script>
@@ -95,10 +93,9 @@
                         <input asp-for="Url" id="modal-url" class="form-control" placeholder="MAL link">
                     </div>
                 </div>
+                <div class="text-center"><span id="modal-status"></span></div>
             </div>
-            <button id="modal-submit" type="button" class="btn btn-block btn-light">
-                <span>Add</span>
-            </button>
+            <button id="modal-submit" type="button" class="btn btn-block btn-light">Add</button>
         </div>
     </div>
 </div>
