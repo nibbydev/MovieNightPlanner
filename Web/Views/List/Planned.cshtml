@@ -101,7 +101,7 @@
                         <tr>
                             <td>Score</td>
                             <td>
-                                <small>@item.Score</small>
+                                <small>@(item.Score?.ToString() ?? "-")</small>
                             </td>
                         </tr>
                         <tr>
