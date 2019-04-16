@@ -40,11 +40,11 @@
                 dataTypes: "json"
             });
 
-            request.done(function (response) {
+            request.done(function(response) {
                 console.log(response);
             });
 
-            request.fail(function (response) {
+            request.fail(function(response) {
                 console.log(response);
             });
         }
@@ -69,13 +69,13 @@
                 }
             }
         }
-        
+
         function changeButtonCounter(button, value) {
             const span = $("span", button);
 
             value += parseInt(span.html());
             span.html(value);
-            
+
             if (value <= 0) {
                 span.addClass("d-none");
             } else span.removeClass("d-none");
@@ -96,40 +96,62 @@
                     </a>
                     <hr/>
 
-                    <table class="table table-borderless table-xs mb-0">
-                        <tbody>
-                        <tr>
-                            <td>Score</td>
-                            <td>
-                                <small>@(item.Score?.ToString() ?? "-")</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Duration</td>
-                            <td>
-                                <small>@item.Duration</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rating</td>
-                            <td>
-                                <small>@item.Rating</small>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Genres</td>
-                            <td>
-                                <small>@item.Genres</small>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <hr/>
-                    <small class="text-muted">Suggested by @item.User.Username</small>
+                    <div class="row">
+                        <div class="col">
+                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-info-@item.Id" 
+                               role="button" aria-expanded="false" aria-controls="collapse-info-@item.Id">
+                                Info
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-votes-@item.Id" 
+                               role="button" aria-expanded="false" aria-controls="collapse-votes-@item.Id">
+                                Votes
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="collapse" id="collapse-info-@item.Id">
+                        <hr/>
+                        <table class="table table-borderless table-xs mb-0">
+                            <tbody>
+                            <tr>
+                                <td class="text-nowrap">Posted by</td>
+                                <td>
+                                    <small>@item.User.Username</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Score</td>
+                                <td>
+                                    <small>@(item.Score?.ToString() ?? "-")</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Duration</td>
+                                <td>
+                                    <small>@item.Duration</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Rating</td>
+                                <td>
+                                    <small>@item.Rating</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Genres</td>
+                                <td>
+                                    <small>@item.Genres</small>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
-                
-                <div class="row no-gutters">
+                <div class="row no-gutters border-top">
                     <div class="col">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="upvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
@@ -138,7 +160,7 @@
                             <span class="badge" asp-if-class-d-none="@(item.UpVotes == 0)">@item.UpVotes</span>
                         </button>
                     </div>
-                    
+
                     <div class="col">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="seen" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
@@ -147,7 +169,7 @@
                             <span class="badge" asp-if-class-d-none="@(item.Seen == 0)">@item.Seen</span>
                         </button>
                     </div>
-                    
+
                     <div class="col">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="downvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
@@ -155,6 +177,26 @@
                             <i class="fa fa-arrow-down mr-2"></i>
                             <span class="badge" asp-if-class-d-none="@(item.DownVotes == 0)">@item.DownVotes</span>
                         </button>
+                    </div>
+                </div>
+
+                <div class="collapse" id="collapse-votes-@item.Id">
+                    <div class="row no-gutters py-2 border-top">
+                        <div class="col text-center border-right">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
+                        <div class="col text-center border-right">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
+                        <div class="col text-center">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

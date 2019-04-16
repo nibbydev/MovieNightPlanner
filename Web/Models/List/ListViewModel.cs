@@ -13,7 +13,6 @@ namespace MovieNight.Models.List {
 
         public ListViewModel() { }
 
-
         public void GetPlannedSubmissions(MlContext ctx, string username) {
             PlannedSubmissions = ctx.Submissions
                 .Where(t => !t.IsWatched)
@@ -83,12 +82,12 @@ namespace MovieNight.Models.List {
                     msg = "An error occurred while adding the vote";
                     return false;
                 }
-                
+
                 msg = "Successfully added vote";
                 return true;
             }
-            
-                    
+
+
             // Remove vote from database
             if (vote.Value == value) {
                 try {
@@ -111,7 +110,7 @@ namespace MovieNight.Models.List {
                 msg = "An error occurred while adding the vote";
                 return false;
             }
-            
+
             msg = "Successfully updated the vote";
             return true;
         }
