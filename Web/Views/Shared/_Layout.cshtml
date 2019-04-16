@@ -9,14 +9,19 @@
     <meta property="og:title" content="Movie Night Planner">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://movieplanner.live/logo_96.png">
-    <meta property="og:description" content="For recommending and voting on movies">
+    <meta property="og:description" content="Recommend and vote on movies">
     <title>@ViewBag.Title - Movie Night</title>
-
-    <link rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
-          crossorigin="anonymous">
+    
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/fontawesome/all.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" 
+              integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" 
+              crossorigin="anonymous">
+    </environment>
 </head>
 <body>
 <header>
@@ -101,7 +106,6 @@
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous">
-
     </script>
 </environment>
 <script src="~/js/site.js" asp-append-version="true"></script>
