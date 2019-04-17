@@ -166,21 +166,26 @@
                         <hr class="m-0"/>
                     </div>
                     <div class="row no-gutters py-2">
-                        <div class="col text-center border-right">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
-                        <div class="col text-center border-right">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
-                        <div class="col text-center">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
+                        @if (item.Votes.Count == 0) {
+                            <div class="col text-center">No votes yet</div>
+                            
+                        } else {
+                            <div class="col text-center border-right">
+                                @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
+                                    <div class="font-weight-light text-break">@vote.User.Username</div>
+                                }
+                            </div>
+                            <div class="col text-center border-right">
+                                @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
+                                    <div class="font-weight-light text-break">@vote.User.Username</div>
+                                }
+                            </div>
+                            <div class="col text-center">
+                                @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
+                                    <div class="font-weight-light text-break">@vote.User.Username</div>
+                                }
+                            </div>
+                        }
                     </div>
                 </div>
 
