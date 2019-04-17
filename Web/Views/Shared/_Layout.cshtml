@@ -29,10 +29,10 @@
         <div class="container">
             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
                 <img src="~/logo_96.png" width="25" height="25" class="d-inline-block align-top" alt="">
-                MovieNight
+                Movie Planner
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" 
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
@@ -40,41 +40,44 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Planned">
                             <i class="fa fa-list"></i>
-                            Planned
+                            <span class="d-inline d-sm-none d-lg-inline">Planned</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="Watched">
                             <i class="fa fa-tv"></i>
-                            Watched
+                            <span class="d-inline d-sm-none d-lg-inline">Watched</span>
                         </a>
                     </li>
                     @if (HttpContextAccessor.HttpContext.Session.GetString("username") == null) {
                         <li class="nav-item ml-sm-auto">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">
                                 <i class="fa fa-user"></i>
-                                Log in
+                                <span class="d-inline d-sm-none d-lg-inline">Log in</span>
                             </a>
                         </li>
                     } else {
                         <li class="nav-item mr-sm-auto">
                             <a class="nav-link text-dark" asp-area="" asp-controller="List" asp-action="New">
                                 <i class="fa fa-edit"></i>
-                                Add new
+                                <span class="d-inline d-sm-none d-lg-inline">Add new</span>
                             </a>
                         </li>
                         if (HttpContextAccessor.HttpContext.Session.GetInt32("is_admin") == 1) {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">
                                     <i class="fa fa-cogs"></i>
-                                    Admin panel
+                                    <span class="d-inline d-sm-none d-xl-inline">Admin panel</span>
                                 </a>
                             </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Logout">
                                 <i class="fa fa-user"></i>
-                                Log out (@HttpContextAccessor.HttpContext.Session.GetString("username"))
+                                Log out 
+                                <span class="d-inline d-sm-none d-xl-inline">
+                                    (@HttpContextAccessor.HttpContext.Session.GetString("username"))
+                                </span>
                             </a>
                         </li>
                     }
