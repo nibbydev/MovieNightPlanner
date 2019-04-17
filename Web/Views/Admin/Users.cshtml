@@ -28,8 +28,6 @@
                 id: id,
                 username: getAndVerifyInputs().username
             };
-
-            updateDom(btn, action);
             
             // If user is creating a new user, but the name is invalid
             if (action === "create" && !payload.username) {
@@ -45,26 +43,27 @@
                 dataTypes: "json"
             });
 
-            // Would be nice to have some status message pop up 
-            // but currently there's too little room for that
+            const text = $("span[name=text]", this);
+            const spinner = $("span[name=spinner]", this);
+            const status = $("i", this);
+
+            text.addClass("d-none");
+            spinner.removeClass("d-none");
+            status.removeClass();
+            btn.attr("disabled", true);
             
-            request.done(function(response) {
+            function requestDone() {
                 console.log(response);
-            });
-
-            request.fail(function(response) {
-                console.log(response);
-            });
-        }
-
-        function updateDom(btn, action) {
-            if (action === "delete") {
-                // Remove the row the user wanted deleted
-                btn.closest("tr").remove();
-            } else if (action === "reset") {
-                // Disable the reset password button since it's already reset
-                btn.attr("disabled", true);
+                spinner.addClass("d-none");
+                status.addClass("fa fa-times");
+                
+                if (action === "create") {
+                    btn.attr("disabled", false);
+                }
             }
+
+            request.done(requestDone);
+            request.fail(requestDone);
         }
         
         function getAndVerifyInputs() {
@@ -113,13 +112,17 @@
                     <td>
                         <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap"
                                 action="delete" id="@item.Id" asp-disable="@item.IsAdmin">
-                            <span>Delete</span>
+                            <span name="text">Delete</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
                         </button>
                     </td>
                     <td>
                         <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap"
                                 action="reset" id="@item.Id" asp-disable="@(item.Secret == null || item.IsAdmin)">
-                            <span>Reset password</span>
+                            <span name="text">Reset password</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
                         </button>
                     </td>
                 </tr>
@@ -132,7 +135,9 @@
                 <td>False</td>
                 <td colspan="2">
                     <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap" action="create">
-                        <span>Create new</span>
+                        <span name="text">Create new</span>
+                        <span name="spinner" class="spinner-border d-none"></span>
+                        <i class="fa"></i>
                     </button>
                 </td>
             </tr>

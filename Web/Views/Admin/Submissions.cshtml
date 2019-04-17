@@ -21,8 +21,6 @@
             const action = btn.attr("action");
             const id = btn.attr("id");
 
-            updateDom(btn, action, id);
-
             // Get data from button
             const payload = {
                 action: action,
@@ -36,25 +34,24 @@
                 async: true,
                 dataTypes: "json"
             });
+            
+            const text = $("span[name=text]", this);
+            const spinner = $("span[name=spinner]", this);
+            const status = $("i", this);
+            
+            text.addClass("d-none");
+            spinner.removeClass("d-none");
+            status.removeClass();
+            btn.attr("disabled", true);
 
-            request.done(function (response) {
+            function requestDone(response) {
                 console.log(response);
-            });
-
-            request.fail(function (response) {
-                console.log(response);
-            });
-        }
-
-        function updateDom(btn, action, id) {
-            if (action === "delete") {
-                btn.closest("tr").remove();
-            } else if (action === "watched") {
-                const span = $("span", btn);
-                if (span.html() === "Mark watched") {
-                    span.html("Mark unwatched");
-                } else span.html("Mark watched");
+                spinner.addClass("d-none");
+                status.addClass("fa fa-check");
             }
+
+            request.done(requestDone);
+            request.fail(requestDone);
         }
     </script>
 }
@@ -82,22 +79,28 @@
                         <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap" 
                                 action="watched" id="@item.Id">
                             @if (item.IsWatched) {
-                                <span>Mark unwatched</span>
+                                <span name="text">Mark unwatched</span>
                             } else {
-                                <span>Mark watched</span>
+                                <span name="text">Mark watched</span>
                             }
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
                         </button>
                     </td>
                     <td>
                         <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap" 
                                 action="reset" id="@item.Id">
-                            <span>Reset votes</span>
+                            <span name="text">Reset votes</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
                         </button>
                     </td>
                     <td>
                         <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap" 
                                 action="delete" id="@item.Id">
-                            <span>Delete</span>
+                            <span name="text">Delete</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
                         </button>
                     </td>
                 </tr>
