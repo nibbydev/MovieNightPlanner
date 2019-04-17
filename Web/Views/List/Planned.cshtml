@@ -98,13 +98,13 @@
 
                     <div class="row">
                         <div class="col">
-                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-info-@item.Id" 
+                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-info-@item.Id"
                                role="button" aria-expanded="false" aria-controls="collapse-info-@item.Id">
                                 Info
                             </a>
                         </div>
                         <div class="col">
-                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-votes-@item.Id" 
+                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-votes-@item.Id"
                                role="button" aria-expanded="false" aria-controls="collapse-votes-@item.Id">
                                 Votes
                             </a>
@@ -151,6 +151,26 @@
 
                 </div>
 
+                <div class="collapse" id="collapse-votes-@item.Id">
+                    <div class="row no-gutters py-2 border-top">
+                        <div class="col text-center border-right">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
+                        <div class="col text-center border-right">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
+                        <div class="col text-center">
+                            @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
+                                <div class="font-weight-light text-break">@vote.User.Username</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row no-gutters border-top">
                     <div class="col">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="upvote" id="@item.Id"
@@ -177,26 +197,6 @@
                             <i class="fa fa-arrow-down mr-2"></i>
                             <span class="badge" asp-if-class-d-none="@(item.DownVotes == 0)">@item.DownVotes</span>
                         </button>
-                    </div>
-                </div>
-
-                <div class="collapse" id="collapse-votes-@item.Id">
-                    <div class="row no-gutters py-2 border-top">
-                        <div class="col text-center border-right">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
-                        <div class="col text-center border-right">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
-                        <div class="col text-center">
-                            @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
-                                <div class="font-weight-light text-break">@vote.User.Username</div>
-                            }
-                        </div>
                     </div>
                 </div>
             </div>
