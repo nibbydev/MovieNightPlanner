@@ -88,13 +88,23 @@
         <div class="col-lg-4 col-md-6 col-12">
             <div class="card mb-3">
                 <a href="@item.Url" target="_blank">
-                    <img alt="..." src="@item.ImageUrl" class="card-img-top"/>
+                    <img alt="..." src="@item.ImageUrl" class="card-img-top border-bottom"/>
                 </a>
+                
                 <div class="card-body">
                     <a href="@item.Url" target="_blank">
                         <h5 class="card-title">@item.Title</h5>
                     </a>
                     <hr/>
+                    
+                    @if (Model.PlannedSubmissions.IndexOf(item) == 0) {
+                        <div class="text-center">
+                            <i class="fa fa-crown"></i>
+                            <span class="mx-2">Most voted</span>
+                            <i class="fa fa-crown"></i>
+                        </div>
+                        <hr/>
+                    }
 
                     <div class="row">
                         <div class="col">
@@ -152,7 +162,10 @@
                 </div>
 
                 <div class="collapse" id="collapse-votes-@item.Id">
-                    <div class="row no-gutters py-2 border-top">
+                    <div class="card-body py-0">
+                        <hr class="m-0"/>
+                    </div>
+                    <div class="row no-gutters py-2">
                         <div class="col text-center border-right">
                             @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
                                 <div class="font-weight-light text-break">@vote.User.Username</div>
