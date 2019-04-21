@@ -1,5 +1,7 @@
 # Movie Night Planner
 
+![List](Resources/cover1.png)
+
 ## What is it?
 While essentially a tech demo of MVC ASP.NET Core and EF Core, this site allows users to plan and vote for movies.
 
