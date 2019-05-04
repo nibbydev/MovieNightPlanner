@@ -52,7 +52,7 @@
             status.removeClass();
             btn.attr("disabled", true);
             
-            function requestDone() {
+            function requestDone(response) {
                 console.log(response);
                 spinner.addClass("d-none");
                 status.addClass("fa fa-times");
