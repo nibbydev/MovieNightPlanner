@@ -10,7 +10,8 @@
     <script type="text/javascript">
         @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
             @Html.Raw("const URL = 'https://localhost:5001/Admin/Submissions';")
-        } else {
+        }
+        else {
             @Html.Raw("const URL = 'https://movieplanner.live/Admin/Submissions';")
         }
     
@@ -34,11 +35,11 @@
                 async: true,
                 dataTypes: "json"
             });
-            
+
             const text = $("span[name=text]", this);
             const spinner = $("span[name=spinner]", this);
             const status = $("i", this);
-            
+
             text.addClass("d-none");
             spinner.removeClass("d-none");
             status.removeClass();
@@ -71,24 +72,23 @@
             </thead>
             <tbody>
             @foreach (var item in Model.Submissions) {
+                if (item.IsWatched) {
+                    continue;
+                }
                 <tr>
                     <th scope="row">@item.Id</th>
                     <td>@item.Title</td>
                     <td>@item.User.Username</td>
                     <td>
-                        <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap" 
+                        <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap"
                                 action="watched" id="@item.Id">
-                            @if (item.IsWatched) {
-                                <span name="text">Mark unwatched</span>
-                            } else {
-                                <span name="text">Mark watched</span>
-                            }
+                            <span name="text">Mark watched</span>
                             <span name="spinner" class="spinner-border d-none"></span>
                             <i class="fa"></i>
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap" 
+                        <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap"
                                 action="reset" id="@item.Id">
                             <span name="text">Reset votes</span>
                             <span name="spinner" class="spinner-border d-none"></span>
@@ -96,7 +96,59 @@
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap" 
+                        <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap"
+                                action="delete" id="@item.Id">
+                            <span name="text">Delete</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        <table class="table table-responsive-lg table-bordered table-sm">
+            <thead>
+            <tr>
+                <th class="text-nowrap" scope="col">Id</th>
+                <th class="text-nowrap" scope="col">Title</th>
+                <th class="text-nowrap" scope="col">Added by</th>
+                <th class="text-nowrap" scope="col" colspan="3">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model.Submissions) {
+                if (!item.IsWatched) {
+                    continue;
+                }
+                <tr>
+                    <th scope="row">@item.Id</th>
+                    <td>@item.Title</td>
+                    <td>@item.User.Username</td>
+                    <td>
+                        <button type="button" class="btn btn-block btn-light btn-outline-success text-nowrap"
+                                action="watched" id="@item.Id">
+                            <span name="text">Mark unwatched</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap"
+                                action="reset" id="@item.Id">
+                            <span name="text">Reset votes</span>
+                            <span name="spinner" class="spinner-border d-none"></span>
+                            <i class="fa"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-block btn-light btn-outline-danger text-nowrap"
                                 action="delete" id="@item.Id">
                             <span name="text">Delete</span>
                             <span name="spinner" class="spinner-border d-none"></span>
