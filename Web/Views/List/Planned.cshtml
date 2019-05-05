@@ -190,7 +190,7 @@
                 </div>
 
                 <div class="row no-gutters border-top">
-                    <div class="col">
+                    <div class="col-4">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="upvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasVotedFor">
@@ -199,7 +199,7 @@
                         </button>
                     </div>
 
-                    <div class="col">
+                    <div class="col-4">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="seen" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasSeen">
@@ -208,7 +208,7 @@
                         </button>
                     </div>
 
-                    <div class="col">
+                    <div class="col-4">
                         <button type="button" class="btn btn-block btn-light text-nowrap" action="downvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-active="@item.UserHasVotedAgainst">
