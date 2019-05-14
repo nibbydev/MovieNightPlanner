@@ -13,7 +13,8 @@
     <script type="text/javascript">
         @if (HostingEnvironment.EnvironmentName.Equals("Development")) {
             @Html.Raw("const URL = 'https://localhost:5001/List/Action';")
-        } else {
+        }
+        else {
             @Html.Raw("const URL = 'https://movieplanner.live/List/Action';")
         }
     
@@ -85,141 +86,122 @@
 
 <div class="row">
     @foreach (var item in Model.PlannedSubmissions) {
-        <div class="col-lg-4 col-md-6 col-12">
-            <div class="card mb-3">
-                <a href="@item.Url" target="_blank">
-                    <img alt="..." src="@item.ImageUrl" class="card-img-top border-bottom"/>
+        <div class="col-xl-6 col-12">
+            <div class="card flex-row overflow-hidden mb-3">
+                <a href="@item.Url" target="_blank" class="h-auto border-right">
+                    <img alt="..." src="@item.ImageUrl" class="w-auto"/>
                 </a>
-                
-                <div class="card-body">
-                    <a href="@item.Url" target="_blank">
-                        <h5 class="card-title">@item.Title</h5>
-                    </a>
-                    <hr/>
-                    
-                    @if (Model.PlannedSubmissions.IndexOf(item) == 0) {
-                        <div class="text-center">
-                            <i class="fa fa-crown"></i>
-                            <span class="mx-2">Most voted</span>
-                            <i class="fa fa-crown"></i>
-                        </div>
-                        <hr/>
-                    }
 
-                    <div class="row">
-                        <div class="col">
-                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-info-@item.Id"
-                               role="button" aria-expanded="false" aria-controls="collapse-info-@item.Id">
-                                Info
+                <div class="d-flex flex-column w-100">
+                    <div class="card-body pb-0">
+                        <a href="@item.Url" target="_blank">
+                            <h5 class="card-title text-center">@item.Title</h5>
+                        </a>
+
+                        <div class="d-flex flex-row">
+                            <div class="w-100 flex-column mr-3">
+                                <div class="p-1"></div>
+                                <div class="border-top"></div>
+                                <div class="p-1"></div>
+                            </div>
+                            <a data-toggle="collapse" href="#collapse-votes-@item.Id">
+                                <span class="text-nowrap">Click me</span>
                             </a>
+                            <div class="w-100 flex-column ml-3">
+                                <div class="p-1"></div>
+                                <div class="border-top"></div>
+                                <div class="p-1"></div>
+                            </div>
                         </div>
-                        <div class="col">
-                            <a class="btn btn-block p-0" data-toggle="collapse" href="#collapse-votes-@item.Id"
-                               role="button" aria-expanded="false" aria-controls="collapse-votes-@item.Id">
-                                Votes
-                            </a>
+
+                        <div class="collapse show" id="collapse-votes-@item.Id">
+                            <table class="table table-borderless table-xs mb-0">
+                                <tbody>
+                                <tr>
+                                    <td class="text-nowrap">Posted by</td>
+                                    <td class="w-100">
+                                        <small>@item.User.Username</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Score</td>
+                                    <td>
+                                        <small>@(item.Score?.ToString() ?? "-")</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Duration</td>
+                                    <td>
+                                        <small>@item.Duration</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Rating</td>
+                                    <td>
+                                        <small>@item.Rating</small>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Genres</td>
+                                    <td>
+                                        <small>@item.Genres</small>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                    <div class="collapse" id="collapse-votes-@item.Id">
+                        <div class="row no-gutters py-2">
+                            @if (item.Votes.Count == 0) {
+                                <div class="col text-center">No votes yet</div>
+                            }
+                            else {
+                                <div class="col text-center border-right">
+                                    @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
+                                        <div class="font-weight-light text-break">@vote.User.Username</div>
+                                    }
+                                </div>
+                                <div class="col text-center border-right">
+                                    @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
+                                        <div class="font-weight-light text-break">@vote.User.Username</div>
+                                    }
+                                </div>
+                                <div class="col text-center">
+                                    @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
+                                        <div class="font-weight-light text-break">@vote.User.Username</div>
+                                    }
+                                </div>
+                            }
                         </div>
                     </div>
 
-                    <div class="collapse" id="collapse-info-@item.Id">
-                        <hr/>
-                        <table class="table table-borderless table-xs mb-0">
-                            <tbody>
-                            <tr>
-                                <td class="text-nowrap">Posted by</td>
-                                <td>
-                                    <small>@item.User.Username</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Score</td>
-                                <td>
-                                    <small>@(item.Score?.ToString() ?? "-")</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Duration</td>
-                                <td>
-                                    <small>@item.Duration</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Rating</td>
-                                <td>
-                                    <small>@item.Rating</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Genres</td>
-                                <td>
-                                    <small>@item.Genres</small>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-
-                <div class="collapse" id="collapse-votes-@item.Id">
-                    <div class="card-body py-0">
-                        <hr class="m-0"/>
-                    </div>
-                    <div class="row no-gutters py-2">
-                        @if (item.Votes.Count == 0) {
-                            <div class="col text-center">No votes yet</div>
-                            
-                        } else {
-                            <div class="col text-center border-right">
-                                @foreach (var vote in item.Votes.Where(t => t.Value == 1)) {
-                                    <div class="font-weight-light text-break">@vote.User.Username</div>
-                                }
-                            </div>
-                            <div class="col text-center border-right">
-                                @foreach (var vote in item.Votes.Where(t => t.Value == 0)) {
-                                    <div class="font-weight-light text-break">@vote.User.Username</div>
-                                }
-                            </div>
-                            <div class="col text-center">
-                                @foreach (var vote in item.Votes.Where(t => t.Value == -1)) {
-                                    <div class="font-weight-light text-break">@vote.User.Username</div>
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-
-                <div class="row no-gutters border-top">
-                    <div class="col-4">
-                        <button type="button" class="btn btn-block text-nowrap" action="upvote" id="@item.Id"
+                    <div class="d-flex flex-row mt-auto border-top">
+                        <button type="button" class="btn btn-block text-nowrap border-right m-0" action="upvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-btn-light="@(!item.UserHasVotedFor)"
                                 asp-if-class-btn-success="@item.UserHasVotedFor"
                                 asp-if-class-active="@item.UserHasVotedFor">
                             <i class="fa fa-arrow-up mr-2"></i>
-                            <span class="badge" asp-if-class-d-none="@(item.UpVotes == 0)">@item.UpVotes</span>
+                            <span class="badge">@(item.UpVotes > 0 ? item.UpVotes : 0)</span>
                         </button>
-                    </div>
-
-                    <div class="col-4">
-                        <button type="button" class="btn btn-block text-nowrap" action="seen" id="@item.Id"
+                        <button type="button" class="btn btn-block text-nowrap border-right m-0" action="seen" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-btn-light="@(!item.UserHasSeen)"
                                 asp-if-class-btn-warning="@item.UserHasSeen"
-                                asp-if-class-active="@item.UserHasSeen" >
+                                asp-if-class-active="@item.UserHasSeen">
                             <i class="fa fa-eye mr-2"></i>
-                            <span class="badge" asp-if-class-d-none="@(item.Seen == 0)">@item.Seen</span>
+                            <span class="badge">@(item.Seen > 0 ? item.Seen : 0)</span>
                         </button>
-                    </div>
-
-                    <div class="col-4">
-                        <button type="button" class="btn btn-block text-nowrap" action="downvote" id="@item.Id"
+                        <button type="button" class="btn btn-block text-nowrap m-0" action="downvote" id="@item.Id"
                                 asp-disable="@(HttpContextAccessor.HttpContext.Session.GetString("username") == null)"
                                 asp-if-class-btn-light="@(!item.UserHasVotedAgainst)"
                                 asp-if-class-btn-danger="@item.UserHasVotedAgainst"
-                                asp-if-class-active="@item.UserHasVotedAgainst" >
+                                asp-if-class-active="@item.UserHasVotedAgainst">
                             <i class="fa fa-arrow-down mr-2"></i>
-                            <span class="badge" asp-if-class-d-none="@(item.DownVotes == 0)">@item.DownVotes</span>
+                            <span class="badge">@(item.DownVotes > 0 ? item.DownVotes : 0)</span>
                         </button>
                     </div>
                 </div>

@@ -79,3 +79,7 @@ body {
 .table-xs td {
   padding: 0.25rem;
 }
+
+.poster-limit {
+  max-width: 275px;
+}
