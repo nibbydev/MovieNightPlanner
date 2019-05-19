@@ -9,16 +9,6 @@ namespace MovieNight.Controllers {
         private readonly MlContext _ctx = new MlContext();
 
         [HttpGet]
-        public IActionResult Index() {
-            if (!IsAdmin()) {
-                var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
-                return RedirectToAction("Status", "Home", statusModel);
-            }
-
-            return View();
-        }
-
-        [HttpGet]
         public IActionResult Users() {
             if (!IsAdmin()) {
                 var statusModel = new StatusViewModel {IsError = true, Message = "Not authenticated"};
