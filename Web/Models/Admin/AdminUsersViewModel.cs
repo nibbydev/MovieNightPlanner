@@ -118,12 +118,6 @@ namespace MovieNight.Models.Admin {
                 msg = "No such user";
                 return false;
             }
-            
-            // Keep admins from resetting other admins' passwords
-            if (user.IsAdmin) {
-                msg = "Cannot reset an admin password through the admin panel";
-                return false;
-            }
 
             try {
                 user.Secret = null;

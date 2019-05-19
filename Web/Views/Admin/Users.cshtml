@@ -117,7 +117,7 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-block btn-light btn-outline-warning text-nowrap"
-                                action="reset" id="@item.Id" asp-disable="@(item.Secret == null || item.IsAdmin)">
+                                action="reset" id="@item.Id" asp-disable="@(item.Secret == null)">
                             <span name="text">Reset password</span>
                             <span name="spinner" class="spinner-border d-none"></span>
                             <i class="fa"></i>
